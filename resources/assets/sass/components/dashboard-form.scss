@@ -1,0 +1,26 @@
+.dashboard-form {
+    
+	.form-legend {
+		margin-top: 1rem;
+
+		legend {
+			border: none;
+		}
+	}
+
+    .form-inline {
+        &:not(:first-of-type) {
+            margin-top: 1rem;
+        }
+
+        .form-control {
+            margin-left: 10px;
+            margin-right: 36px;
+            width: 110px;
+        }
+    }
+
+	label {
+		font-weight: normal;
+	}
+}

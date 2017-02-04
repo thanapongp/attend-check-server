@@ -1,0 +1,23 @@
+{
+  "name": "attendcheck",
+  "description": "Attendance checking system (server-side)",
+  "main": "",
+  "authors": [
+    "Thanapong Prathumchat <thanapong.pr.56@ubu.ac.th>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/thanapongp/attend-check-server",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor/bower_components/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "components-font-awesome": "^4.7.0",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.44"
+  }
+}

@@ -1,0 +1,46 @@
+.auth {
+    overflow: auto;
+    background: linear-gradient(141deg, #009e6c 0%, #00d1b2 71%, #00e7eb 100%);
+
+    .logo {
+        padding: 40px 0 30px;
+        text-align: center;
+        font-size: 40px;
+        font-weight: 300;
+        color: #fff;
+    }
+
+    .auth-panel {
+        margin: 0 auto;
+        padding: 40px;
+        width: 400px;
+        box-shadow: 0px 0px 40px 10px rgba(0, 0, 0, 0.2);
+
+        > legend.form-header {
+            border: 0 !important;
+            text-align: center;
+            font-size: 30px;
+            font-weight: 300;
+            color: #565656;
+        }
+    }
+
+    .register-panel {
+        width: 450px;
+    }
+
+    label {
+        font-weight: normal;
+    }
+
+    .inside-panel-link, .outside-panel-link {
+        display: block;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .outside-panel-link {
+        margin: 15px 0;
+        color: #fff;
+    }
+}
