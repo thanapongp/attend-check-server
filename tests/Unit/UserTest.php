@@ -57,4 +57,14 @@ class UserTest extends BrowserKitTest
     {
         $this->assertEquals($user->faculty, 'วิทยาศาสตร์');
     }
+
+    /** 
+     * @test
+     * @depends user_can_be_created
+    */
+    function user_can_be_approved(User $user)
+    {
+        $user->approve();
+        $this->assertTrue($user->active);
+    }
 }

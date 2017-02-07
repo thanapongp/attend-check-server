@@ -9,3 +9,6 @@ Route::get('/dashboard', 'DashboardController@showMainPage');
 Route::get('/dashboard/course/add', 'CourseController@create');
 Route::get('/dashboard/course/1106209-59', 'CourseController@show');
 Route::get('/dashboard/course/1106209-59/1', 'CourseController@showSchedule');
+
+Route::get('/dashboard/user/{user}', 'UserController@show');
+Route::post('/dashboard/user/{user}/approve', 'UserController@approve');
