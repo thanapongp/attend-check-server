@@ -44,4 +44,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo('AttendCheck\Faculty');
     }
+
+    public function approve()
+    {
+        if (! $this->active) {
+            $this->active = true;
+            $this->save();
+        }
+    }
 }

@@ -47,4 +47,15 @@ class UserApprovalTest extends BrowserKitTest
         $this->assertEquals(Auth::user()->username, $this->staffUser->username);
         $this->seePageIs('/dashboard');
     }
+
+    /** @test */
+    function user_can_be_activated_by_staff()
+    {
+        $this->actingAs($this->staffUser)
+             ->visit('/dashboard/user/' . $this->normalUser->id)
+             ->press('active');
+
+        $this->assertEquals((User::find($this->normalUser->id))->active, 1);
+        $this->seePageIs('/dashboard/user/' . $this->normalUser->id);
+    }
 }
