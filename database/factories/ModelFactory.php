@@ -27,3 +27,9 @@ $factory->define(AttendCheck\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->state(AttendCheck\User::class, 'notActive', function ($faker) {
+    return [
+        'active' => false,
+    ];
+});
