@@ -4,10 +4,14 @@ namespace AttendCheck\Api;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client as HttpClient;
-use AttendCheck\Api\QueryStringBuilder;
 
 class Requestor
 {
+    /**
+     * Search course API endpoint.
+     *
+     * @var string
+     */
     const API_COURSE_ENDPOINT = "http://tqf.ubu.ac.th/another/search_class.php";
 
     /**
@@ -44,21 +48,38 @@ class Requestor
         $this->queryStringBuilder = $queryStringBuilder;
     }
 
+    /**
+     * Making an API call to search course endpont.
+     * 
+     * @param  \Illuminate\Http\Request $request
+     * @return string JSON Response
+     */
     public function searchCourse(Request $request)
     {
-        $request = $request->only($this->parameters);
+        $requestQuery = $this->queryStringBuilder->build(
+            $request->only($this->parameters), env('TQF_PRIVATEKEY')
+        );
 
         $response = $this->client->request('GET', self::API_COURSE_ENDPOINT, [
-            'query' => $this->queryStringBuilder->build(
-                $request, env('TQF_PRIVATEKEY')
-            )
+            'query' => $requestQuery
         ]);
 
+        // Remove any hidden characters before returning the response.
         return $this->removeHiddenChars($response->getBody());
     }
 
+    /**
+     * Remove hidden characters that makes PHP see JSON response
+     * as an invalid JSON.
+     * 
+     * @source http://stackoverflow.com/questions/17219916/json-decode-returns-json-error-syntax-but-online-formatter-says-the-json-is-ok
+     * @param  string $jsonString
+     * @return string
+     */
     private function removeHiddenChars($jsonString)
     {
+        // This will remove unwanted characters.
+        // Check http://www.php.net/chr for details
         for ($i = 0; $i <= 31; ++$i) { 
             $jsonString = str_replace(chr($i), "", $jsonString); 
         }
