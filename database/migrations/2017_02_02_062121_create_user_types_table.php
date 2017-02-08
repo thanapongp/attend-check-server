@@ -19,6 +19,12 @@ class CreateUserTypesTable extends Migration
             $table->string('label');
             $table->timestamps();
         });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreign('type_id')
+                  ->references('id')->on('user_types')
+                  ->onDelete('set null');
+        });
     }
 
     /**

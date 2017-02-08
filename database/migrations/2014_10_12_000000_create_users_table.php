@@ -21,10 +21,10 @@ class CreateUsersTable extends Migration
             $table->string('title');
             $table->string('name');
             $table->string('lastname');
-            $table->integer('faculty_id')->unsigned();
-            $table->integer('type_id')->unsigned();
+            $table->integer('faculty_id')->unsigned()->nullable();
+            $table->integer('type_id')->unsigned()->nullable();
             $table->boolean('active')->default(false);
-            $table->integer('pickcount')->unsigned();
+            $table->integer('pickcount')->unsigned()->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
