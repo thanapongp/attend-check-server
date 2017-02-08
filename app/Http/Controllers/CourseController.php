@@ -3,9 +3,17 @@
 namespace AttendCheck\Http\Controllers;
 
 use Illuminate\Http\Request;
+use AttendCheck\Api\Requestor;
 
 class CourseController extends Controller
 {
+    protected $requestor;
+
+    public function __construct(Requestor $requestor)
+    {
+        $this->requestor = $requestor;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,13 +25,24 @@ class CourseController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for searching new course.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        return view('dashboard.course.create');
+        return view('dashboard.course.search');
+    }
+
+    /**
+     * Show search result page.
+     * 
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function showSearchResult(Request $request)
+    {
+        return $this->requestor->searchCourse($request);
     }
 
     /**
