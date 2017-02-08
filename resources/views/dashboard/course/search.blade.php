@@ -17,30 +17,23 @@
 	</div>
 
 	<div class="panel-body">
-		<form action="#" method="POST" enctype="multipart/form-data" 
+		<form action="/dashboard/course/add/search" method="GET" enctype="multipart/form-data" 
 		class="form-horizontal dashboard-form">
 			
 			<div class="row">
-				<div class="col-sm-3 form-legend">
-					<legend class="text-right">ข้อมูลทั่วไป</legend>
+				<div class="col-sm-6 form-legend">
+					<legend class="text-right">ขั้นที่ 1: ค้นหารายวิชาผ่านระบบ UBU TQF</legend>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label for="code" class="col-sm-3 control-label">รหัสวิชา</label>
 				<div class="col-sm-4">
-					<input type="text" name="code" placeholder="รหัสวิชา" 
+					<input type="text" name="course" placeholder="รหัสวิชา" 
 					class="form-control" required>
 				</div>
 			</div>
 
-			<div class="form-group">
-				<label for="name" class="col-sm-3 control-label">ชื่อวิชา</label>
-				<div class="col-sm-4">
-					<input type="text" name="name" placeholder="ชื่อวิชา" 
-					class="form-control" required>
-				</div>
-			</div>
 
 			<div class="form-group">
 				<label for="section" class="col-sm-3 control-label">Section</label>
@@ -64,7 +57,7 @@
 			<div class="form-group">
 				<label for="semester" class="col-sm-3 control-label">ปีการศึกษา</label>
 				<div class="col-sm-4">
-					<select name="semester" class="form-control">
+					<select name="year" class="form-control">
 						@for($i  = ((int) date("Y")) + 543 - 1; 
 							 $i <= ((int) date("Y")) + 543; 
 							 $i++)
@@ -74,66 +67,10 @@
 				</div>
 			</div>
 
-			<div class="form-group">
-				<label for="studentsList" class="col-sm-3 control-label">รายชื่อนักศึกษา</label>
-				<div class="col-sm-4">
-					<label class="btn btn-raised-default" style="display: inline-block;">
-    					เลือกไฟล์ <input type="file" 
-    					accept=".xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" 
-    					style="display: none;">
-					</label>
-					<span id="filename">ยังไม่ได้เลือกไฟล์</span>
-					<span class="help-block">
-					สามารถอัพโหลดภายหลังได้ 
-					<a href="#">ดูรูปแบบไฟล์ Excel ที่เหมาะสม</a></span>
-				</div>
-			</div>
 			
-			<div class="row">
+			<!-- <div class="row">
 				<div class="col-sm-3 form-legend">
 					<legend class="text-right">ข้อมูลเวลาเรียน</legend>
-				</div>
-			</div>
-
-			<div class="form-group">
-				<label for="times" class="col-sm-3 control-label">เวลาเรียน</label>
-				<div class="col-sm-9">
-					<div class="form-inline">
-						<div class="form-group">
-							<label for="day">วัน</label>
-							<select name="day[]" class="form-control">
-								@foreach(getDaysOfWeek() as $value => $day)
-								<option value="{{$value}}">{{$day}}</option>
-								@endforeach
-							</select>
-						</div>
-						<div class="form-group">
-							เวลา 
-							<select name="start_time[]" class="form-control">
-								@foreach(hoursRange(800, 1800) as $value => $time)
-								<option value="{{$value}}">{{$time}}</option>
-								@endforeach
-							</select>
-						</div>
-						<div class="form-group">
-							ถึง
-							<select name="end_time[]" class="form-control">
-								@foreach(hoursRange(900, 2000) as $value => $time)
-								<option value="{{$value}}">{{$time}}</option>
-								@endforeach
-							</select>
-						</div>
-						<div class="form-group">
-							ห้อง
-							<select name="room[]" class="form-control">
-								<option value="SC412">SC412</option>
-							</select>
-						</div>
-					</div>
-
-					<span class="help-block">
-						<a href="#">+ เพิ่มเวลาเรียน</a>
-					</span>
 				</div>
 			</div>
 
@@ -193,12 +130,12 @@
 					<input type="number" name="late_time" placeholder="เวลาที่เข้าสายได้ (นาที)" 
 					value="15" class="form-control" required>
 				</div>
-			</div>
+			</div> -->
 
 			<div class="row">
 				<div class="col-sm-3 col-sm-offset-3">
 					<button type="submit" class="btn btn-raised-success">
-						เพิ่มรายวิชา
+						ค้นหารายวิชา
 					</button>
 					<a href="#">ยกเลิก</a>
 				</div>
