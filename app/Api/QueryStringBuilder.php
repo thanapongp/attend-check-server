@@ -90,10 +90,8 @@ class QueryStringBuilder
         switch ($key) {
             case 'course':
                 return 'ccode';
-
             case 'year':
                 return 'qyear';
-
             default:
                 return null;
         }
