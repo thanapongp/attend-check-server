@@ -11,13 +11,18 @@ window.$ = window.jQuery = require('jquery');
 
 require('bootstrap-sass');
 
+var moment = require('moment');
+moment.locale('th');
+
+$.fn.datetimepicker = require('eonasdan-bootstrap-datetimepicker');
+
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
  * using reactive data binding and reusable components. Vue's API is clean
  * and simple, leaving you to focus on building your next great project.
  */
 
-window.Vue = require('vue');
+//window.Vue = require('vue');
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -25,11 +30,11 @@ window.Vue = require('vue');
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = require('axios');
+// window.axios = require('axios');
 
-window.axios.defaults.headers.common = {
-    'X-Requested-With': 'XMLHttpRequest'
-};
+// window.axios.defaults.headers.common = {
+//     'X-Requested-With': 'XMLHttpRequest'
+// };
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
