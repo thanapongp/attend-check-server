@@ -64,9 +64,8 @@ class QueryStringBuilder
 
             // Look to see if key has any server's corresponding key name.
             // If it does, use it. If it doesn't, use the original key.
-            $newKeyName = $this->getKeyName($key);
-            $newKeyName = $newKeyName ? $newKeyName : $key;
-
+            $newKeyName = $this->getKeyName($key) ? $this->getKeyName($key) : $key;
+            
             if ($key != 'Key') {
                 $result .= "g_$newKeyName=$value,";
             } else {
