@@ -42,7 +42,15 @@ class CourseController extends Controller
      */
     public function showSearchResult(Request $request)
     {
-        return $this->requestor->searchCourse($request);
+        $response = $this->requestor->searchCourse($request);
+
+        if (property_exists($response, 'COURSE') && $response->COURSE == 'Data Not Found!') {
+            return redirect('/dashboard/course/add')
+                            ->with('status', 'ไม่พบรายวิชาที่ค้นหา')
+                            ->withInput();
+        }
+
+        return view('dashboard.course.searchResult', ['course' => $response]);
     }
 
     /**

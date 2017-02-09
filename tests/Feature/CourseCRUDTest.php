@@ -41,10 +41,7 @@ class CourseCRUDTest extends BrowserKitTest
             '/dashboard/course/add/search?course=1106204&section=2&semester=2&year=2559'
         );
 
-        $this->seeJson([
-            'COURSECODE' => '1106204',
-            'SEMESTER' => '2',
-            'ACADYEAR' => '2559'
-        ]);
+        $this->see('ขั้นที่ 2')
+             ->see('1106204');
     }
 }

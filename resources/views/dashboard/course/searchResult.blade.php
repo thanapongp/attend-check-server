@@ -21,68 +21,76 @@
 		class="form-horizontal dashboard-form">
 			
 			<div class="row">
-				<div class="col-sm-6 form-legend">
-					<legend class="text-right">ขั้นที่ 1: ค้นหารายวิชาผ่านระบบ UBU TQF</legend>
+				<div class="col-sm-4 form-legend">
+					<legend class="text-right">ผลการค้นหารายวิชา</legend>
 				</div>
 			</div>
-
-			@if(session('status'))
-        	<div class="row">
-        		<div class="col-sm-offset-2 col-sm-5">
-        			<div class="alert alert-warning alert-dismissible" role="alert">
-			            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			            <strong>
-			                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-			            </strong> 
-			            {{ session('status') }}
-        			</div>
-        		</div>
-        	</div>
-        	@endif
 
 			<div class="form-group">
 				<label for="code" class="col-sm-3 control-label">รหัสวิชา</label>
 				<div class="col-sm-4">
-					<input type="text" name="course" placeholder="รหัสวิชา" 
-					class="form-control" required>
+					<p class="form-control-static">{{ $course->COURSECODE }}</p>
+					<input type="hidden" name="course" value="{{ $course->COURSECODE }}">
 				</div>
 			</div>
 
+			<div class="form-group">
+				<label for="code" class="col-sm-3 control-label">ชื่อวิชา</label>
+				<div class="col-sm-4">
+					<p class="form-control-static">{{ $course->COURSENAME }}</p>
+					<input type="hidden" name="course" value="{{ $course->COURSENAME }}">
+				</div>
+			</div>
 
 			<div class="form-group">
 				<label for="section" class="col-sm-3 control-label">Section</label>
 				<div class="col-sm-4">
-					<input type="number" name="section" placeholder="Section" 
-					class="form-control" required>
+					<p class="form-control-static">{{ $course->SUBDETAIL[0]->SECTION }}</p>
+					<input type="hidden" name="section" value="{{ $course->SUBDETAIL[0]->SECTION }}">
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label for="semester" class="col-sm-3 control-label">ภาคการศึกษา</label>
 				<div class="col-sm-4">
-					<select name="semester" class="form-control">
-						<option value="1">ภาคต้น</option>
-						<option value="2">ภาคปลาย</option>
-						<option value="3">ภาคฤดูร้อน</option>
-					</select>
+					<p class="form-control-static">{{ getSemester($course->SEMESTER) }}</p>
+					<input type="hidden" name="semester" value="{{ getSemester($course->SEMESTER) }}">
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label for="semester" class="col-sm-3 control-label">ปีการศึกษา</label>
 				<div class="col-sm-4">
-					<select name="year" class="form-control">
-						@for($i  = ((int) date("Y")) + 543 - 1; 
-							 $i <= ((int) date("Y")) + 543; 
-							 $i++)
-						<option value="{{$i}}">{{$i}}</option>
-						@endfor
-					</select>
+					<p class="form-control-static">{{ $course->ACADYEAR }}</p>
+					<input type="hidden" name="year" value="{{ getSemester($course->ACADYEAR) }}">
 				</div>
 			</div>
 
+			@foreach($course->SUBDETAIL as $schedule)
 			
-			<!-- <div class="row">
+			<div class="form-group">
+				@if ($loop->first)
+				<label for="semester" class="col-sm-3 control-label">เวลาเรียน</label>
+				@else
+				<label for="semester" class="col-sm-3 control-label"></label>
+				@endif
+				<div class="col-sm-4">
+					<p class="form-control-static">
+						{{ $schedule->WEEKDAYNAME }} {{ $schedule->TIME_STR }} {{ $schedule->ROOMCODE }}
+					</p>
+					<input type="hidden" name="schedules[]" value="{{ $schedule->WEEKDAYNAME }} {{ $schedule->TIME_STR }} {{ $schedule->ROOMCODE }}">
+				</div>
+			</div>
+
+			@endforeach
+			
+			<div class="row">
+				<div class="col-sm-5 form-legend">
+					<legend class="text-right">ขั้นที่ 2: กรอกข้อมูลรายวิชาเพิ่มเติม</legend>
+				</div>
+			</div>
+			
+			<div class="row">
 				<div class="col-sm-3 form-legend">
 					<legend class="text-right">ข้อมูลเวลาเรียน</legend>
 				</div>
@@ -144,14 +152,14 @@
 					<input type="number" name="late_time" placeholder="เวลาที่เข้าสายได้ (นาที)" 
 					value="15" class="form-control" required>
 				</div>
-			</div> -->
+			</div>
 
 			<div class="row">
 				<div class="col-sm-3 col-sm-offset-3">
 					<button type="submit" class="btn btn-raised-success">
-						ค้นหารายวิชา
+						เพิ่มรายวิชา
 					</button>
-					<a href="#">ยกเลิก</a>
+					<a href="/dashboard/course/add">ค้นหารายวิชาอื่น</a>
 				</div>
 			</div>
 		</form>

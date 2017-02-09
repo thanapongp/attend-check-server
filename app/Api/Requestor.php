@@ -65,7 +65,9 @@ class Requestor
         ]);
 
         // Remove any hidden characters before returning the response.
-        return $this->removeHiddenChars($response->getBody());
+        $response = json_decode($this->removeHiddenChars($response->getBody()));
+
+        return $response;
     }
 
     /**
