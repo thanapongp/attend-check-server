@@ -73,7 +73,7 @@
         <div class="form-group{{ ($errors->has('faculty')) ? ' has-error has-feedback' : '' }}">
             <label for="faculty">คณะที่สังกัด</label>
             <select name="faculty" class="form-control" required readonly>
-                <option value="1" selected>วิทยาศาสตร์</option>
+                <option value="11" selected>วิทยาศาสตร์</option>
             </select>
             @if ($errors->has('faculty'))
             <span class="help-block">{{ $errors->first('faculty') }}</span>

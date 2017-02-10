@@ -37,7 +37,7 @@ class RegisterTest extends BrowserKitTest
             'name'  => 'ทดสอบ',
             'lastname' => 'ทดสอบ',
             'type_id' => '3',
-            'faculty_id' => '1',
+            'faculty_id' => '11',
             'email' => 'test@test.com',
             'username' => 'test1234',
             'active' => '0'
