@@ -20,7 +20,7 @@ class UsersTableSeeder extends Seeder
             'title' => 'นาย',
             'name'     => 'admin',
             'lastname' => 'admin',
-            'faculty_id' => '1',
+            'faculty_id' => '11',
             'type_id' => '1',
             'active' => 1,
         ]);
