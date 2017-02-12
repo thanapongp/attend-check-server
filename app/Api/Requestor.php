@@ -15,6 +15,13 @@ class Requestor
     const API_COURSE_ENDPOINT = "http://tqf.ubu.ac.th/another/search_class.php";
 
     /**
+     * Search course's enrollment API endpoint.
+     *
+     * @var string
+     */
+    const API_ENROLLMENT_ENDPOINT = "http://tqf.ubu.ac.th/another/search_enroll.php";
+
+    /**
      * Instance of GuzzleHttp\Client
      * 
      * @var \GuzzleHttp\Client
@@ -68,6 +75,28 @@ class Requestor
         $response = json_decode($this->removeHiddenChars($response->getBody()));
 
         return $response;
+    }
+
+    public function searchEnrollment($course)
+    {
+        $parameters = [
+            'course' => $course->code,
+            'section' => $course->section,
+            'semester' => $course->semester(),
+            'year' => $course->year,
+        ];
+
+        $requestQuery = $this->queryStringBuilder->build(
+            $parameters, env('TQF_PRIVATEKEY')
+        );
+
+        $response = $this->client->request('GET', self::API_ENROLLMENT_ENDPOINT, [
+            'query' => $requestQuery
+        ]);
+
+        $response = json_decode($this->removeHiddenChars($response->getBody()));
+
+        return $response->STUDENT;
     }
 
     /**

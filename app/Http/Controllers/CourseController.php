@@ -4,14 +4,17 @@ namespace AttendCheck\Http\Controllers;
 
 use Illuminate\Http\Request;
 use AttendCheck\Api\Requestor;
+use AttendCheck\Repositories\CourseRepository as Repository;
 
 class CourseController extends Controller
 {
     protected $requestor;
+    protected $repository;
 
-    public function __construct(Requestor $requestor)
+    public function __construct(Requestor $requestor, Repository $repository)
     {
         $this->requestor = $requestor;
+        $this->repository = $repository;
     }
 
     /**
@@ -61,7 +64,9 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $course = $this->repository->create($request->all());
+
+        $this->repository->findAndEnrollStudent($course);
     }
 
     /**

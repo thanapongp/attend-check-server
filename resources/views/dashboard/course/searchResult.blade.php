@@ -17,9 +17,9 @@
 	</div>
 
 	<div class="panel-body">
-		<form action="/dashboard/course/add/search" method="GET" enctype="multipart/form-data" 
+		<form action="/dashboard/course/store" method="POST" 
 		class="form-horizontal dashboard-form">
-			
+			{{ csrf_field() }}
 			<div class="row">
 				<div class="col-sm-4 form-legend">
 					<legend class="text-right">ผลการค้นหารายวิชา</legend>
@@ -30,7 +30,7 @@
 				<label for="code" class="col-sm-3 control-label">รหัสวิชา</label>
 				<div class="col-sm-4">
 					<p class="form-control-static">{{ $course->COURSECODE }}</p>
-					<input type="hidden" name="course" value="{{ $course->COURSECODE }}">
+					<input type="hidden" name="code" value="{{ $course->COURSECODE }}">
 				</div>
 			</div>
 
@@ -38,7 +38,7 @@
 				<label for="code" class="col-sm-3 control-label">ชื่อวิชา</label>
 				<div class="col-sm-4">
 					<p class="form-control-static">{{ $course->COURSENAME }}</p>
-					<input type="hidden" name="course" value="{{ $course->COURSENAME }}">
+					<input type="hidden" name="name" value="{{ $course->COURSENAME }}">
 				</div>
 			</div>
 
@@ -62,7 +62,7 @@
 				<label for="semester" class="col-sm-3 control-label">ปีการศึกษา</label>
 				<div class="col-sm-4">
 					<p class="form-control-static">{{ $course->ACADYEAR }}</p>
-					<input type="hidden" name="year" value="{{ getSemester($course->ACADYEAR) }}">
+					<input type="hidden" name="year" value="{{ $course->ACADYEAR }}">
 				</div>
 			</div>
 

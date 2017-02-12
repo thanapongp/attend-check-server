@@ -13,6 +13,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     // Course
     Route::get('/course/add', 'CourseController@create');
     Route::get('/course/add/search', 'CourseController@showSearchResult');
+    Route::post('/course/store', 'CourseController@store');
+    
     Route::get('/course/1106209-59', 'CourseController@show');
     Route::get('/course/1106209-59/1', 'CourseController@showSchedule');
 
