@@ -1,6 +1,7 @@
 <?php
 
 Route::get('/', function () { return redirect('/login'); });
+Route::get('/test', 'TestController@create');
 
 Auth::routes();
 Route::get('/register-completed', 'Auth\RegisterController@showRegistrationCompletedPage');

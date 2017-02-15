@@ -23,7 +23,6 @@ class CreateCoursesTable extends Migration
             $table->integer('teacher_id')->unsigned();
             $table->date('start_date');
             $table->date('end_date');
-            $table->tinyInteger('random_method')->unsigned();
             $table->tinyInteger('late_time')->unsigned();
             $table->timestamps();
         });

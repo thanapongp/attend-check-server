@@ -40,8 +40,24 @@ class CourseRepositoryTest extends BrowserKitTest
             'semester' => 'ภาคปลาย',
             'year' => 2559,
             'teacher_id' => $this->user->id,
-            'start_date' => '2017-02-07',
+            'start_date' => '2017-02-14',
             'end_date' => '2017-03-31',
+        ]);
+
+        $this->seeInDatabase('periods', [
+            "course_id" => $course->id,
+            "day" => 2,
+            "start_time" => "13:00",
+            "end_time" => "14:50",
+            "room" => "SC412",
+        ]);
+
+        $this->seeInDatabase('periods', [
+            "course_id" => $course->id,
+            "day" => 5,
+            "start_time" => "13:00",
+            "end_time" => "15:50",
+            "room" => "SC443",
         ]);
     }
 
@@ -72,6 +88,12 @@ class CourseRepositoryTest extends BrowserKitTest
             'end_date' => '31 มี.ค. 2017',
             "random_method" => 1,
             "late_time" => 15,
+            "schedules" => [
+                "อ. 13:00-14:50 SC412",
+                "ศ. 13:00-15:50 SC443",
+            ],
+            "start_date" => "14 ก.พ. 2017",
+            "end_date" => "31 มี.ค. 2017",
         ];
 
         return $this->repository->create($data);

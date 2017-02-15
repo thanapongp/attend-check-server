@@ -24,4 +24,14 @@ class Course extends Model
                 return '1';
         }
     }
+
+    public function periods()
+    {
+        return $this->hasMany('AttendCheck\Course\Period');
+    }
+
+    public function schedules()
+    {
+        return $this->hasMany('AttendCheck\Course\Schedule');
+    }
 }

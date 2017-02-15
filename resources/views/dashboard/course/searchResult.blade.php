@@ -134,7 +134,7 @@
 					<div class="radio">
 						<label>
 							<input type="radio" name="random_method" value="1" checked>
-							สุ่มแบบคละ
+							สุ่มเฉพาะคนที่โดนสุ่มน้อยที่สุด
 						</label>
 					</div>
 					<div class="radio">
