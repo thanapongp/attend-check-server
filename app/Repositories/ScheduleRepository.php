@@ -71,9 +71,7 @@ class ScheduleRepository
         $weekDiff = $startDate->diffInWeeks($endDate) + 1;
         $weekStart = $startDate->startOfWeek();
 
-        $week = 1;
-
-        while ($week <= $weekDiff) {
+        for ($week = 1; $week <= $weekDiff; $week++) {
 
             $course->periods->each(function ($period) use ($weekStart, $course) {
                 $schedule = new Schedule;
@@ -93,9 +91,7 @@ class ScheduleRepository
 
                 $course->schedules()->save($schedule);
             });
-
-            $week++;
-
+            
             $weekStart = $weekStart->next()->startOfWeek();
         }
     }
