@@ -61,9 +61,6 @@ class CourseRepositoryTest extends BrowserKitTest
         ]);
     }
 
-    /**
-     * @test
-     */
     function it_can_find_and_enroll_students_into_course()
     {
         $course = $this->createNewCourse();
