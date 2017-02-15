@@ -15,6 +15,6 @@
     "vue": "^2.0.1"
   },
   "dependencies": {
-    "eonasdan-bootstrap-datetimepicker": "^4.17.46"
+    "eonasdan-bootstrap-datetimepicker": "Eonasdan/bootstrap-datetimepicker"
   }
 }
