@@ -4,6 +4,7 @@ namespace AttendCheck\Http\Controllers;
 
 use Illuminate\Http\Request;
 use AttendCheck\Api\Requestor;
+use AttendCheck\Course\Course;
 use AttendCheck\Repositories\CourseRepository as Repository;
 
 class CourseController extends Controller
@@ -77,9 +78,9 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id = '')
+    public function show(Course $course)
     {
-        return view('dashboard.course.manage');
+        return view('dashboard.course.manage', compact('course'));
     }
 
     /**

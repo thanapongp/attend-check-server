@@ -18,6 +18,18 @@ function getDaysOfWeek()
 	];
 }
 
+function semesterValue($value)
+{
+    switch ($value) {
+        case '1':
+            return 'ภาคต้น';
+        case '2':
+            return 'ภาคปลาย';
+        case '3':
+            return 'ภาคฤดูร้อน';
+    }
+}
+
 /**
  * Create an array of times in given range with any given interval.
  * @source: http://stackoverflow.com/a/21896310
