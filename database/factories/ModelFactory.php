@@ -20,10 +20,16 @@ $factory->define(AttendCheck\User::class, function (Faker\Generator $faker) {
         'title' => $faker->title,
         'name' => $faker->name,
         'lastname' => $faker->lastName,
-        'faculty_id' => 1,
+        'faculty_id' => 11,
         'type_id' => 3,
         'active' => true,
         'pickcount' => random_int(0, 5),
         'remember_token' => str_random(10),
+    ];
+});
+
+$factory->state(AttendCheck\User::class, 'notActive', function ($faker) {
+    return [
+        'active' => false,
     ];
 });

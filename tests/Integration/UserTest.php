@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Integration;
 
 use AttendCheck\User;
 use Tests\BrowserKitTest;
@@ -22,7 +22,7 @@ class UserTest extends BrowserKitTest
             'title'    => 'Mr.',
             'name'     => 'Lorem',
             'lastname' => 'Ipsum',
-            'faculty_id' => '1',
+            'faculty_id' => '11',
             'type_id' => '3',
         ]);
 
@@ -33,7 +33,7 @@ class UserTest extends BrowserKitTest
             'title'    => 'Mr.',
             'name'     => 'Lorem',
             'lastname' => 'Ipsum',
-            'faculty_id' => '1',
+            'faculty_id' => '11',
             'type_id' => '3',
         ]);
 
@@ -56,5 +56,15 @@ class UserTest extends BrowserKitTest
     function user_has_a_faculty(User $user)
     {
         $this->assertEquals($user->faculty, 'วิทยาศาสตร์');
+    }
+
+    /** 
+     * @test
+     * @depends user_can_be_created
+    */
+    function user_can_be_approved(User $user)
+    {
+        $user->approve();
+        $this->assertTrue($user->active);
     }
 }

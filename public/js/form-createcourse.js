@@ -10,17 +10,23 @@ $(document).ready( function() {
         $('#filename').html(label);
     });
 
-    $('.input-group.date').datetimepicker({
+    $('#start_date').datetimepicker({
+        locale: 'th',
+        format: 'D MMM YYYY'
+    });
+
+    $('#end_date').datetimepicker({
         locale: 'th',
         format: 'D MMM YYYY',
         useCurrent: false
     });
 
-    $('#start_date').on('dp.change', function(e) {
+    $('#start_date').on('dp.change', function (e) {
+        console.log('change!');
         $('#end_date').data('DateTimePicker').minDate(e.date);
     });
 
-    $('#end_date').on('dp.change', function(e) {
+    $('#end_date').on('dp.change', function (e) {
         $('#start_date').data('DateTimePicker').maxDate(e.date);
     });
 });

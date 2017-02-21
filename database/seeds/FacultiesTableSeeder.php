@@ -12,10 +12,10 @@ class FacultiesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('faculties')->truncate();
+        //DB::table('faculties')->truncate();
         
         DB::table('faculties')->insert([
-            ['name' => 'วิทยาศาสตร์']
+            ['id' => '11', 'name' => 'วิทยาศาสตร์']
         ]);
     }
 }

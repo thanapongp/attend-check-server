@@ -3,9 +3,20 @@
 namespace AttendCheck\Http\Controllers;
 
 use Illuminate\Http\Request;
+use AttendCheck\Api\Requestor;
+use AttendCheck\Repositories\CourseRepository as Repository;
 
 class CourseController extends Controller
 {
+    protected $requestor;
+    protected $repository;
+
+    public function __construct(Requestor $requestor, Repository $repository)
+    {
+        $this->requestor = $requestor;
+        $this->repository = $repository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,13 +28,32 @@ class CourseController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for searching new course.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        return view('dashboard.course.create');
+        return view('dashboard.course.search');
+    }
+
+    /**
+     * Show search result page.
+     * 
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function showSearchResult(Request $request)
+    {
+        $response = $this->requestor->searchCourse($request);
+
+        if (property_exists($response, 'COURSE') && $response->COURSE == 'Data Not Found!') {
+            return redirect('/dashboard/course/add')
+                            ->with('status', 'ไม่พบรายวิชาที่ค้นหา')
+                            ->withInput();
+        }
+
+        return view('dashboard.course.searchResult', ['course' => $response]);
     }
 
     /**
@@ -34,7 +64,11 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $course = $this->repository->create($request->all());
+
+        $this->repository->findAndEnrollStudent($course);
+
+        return redirect('/dashboard')->with('status', 'เพิ่มรายวิชาสำเร็จ');
     }
 
     /**

@@ -20,44 +20,58 @@ class TestController extends Controller
     public function create()
     {
         $times = [
-            ['day' => 'Monday', 'start_time' => '9:00', 'end_time' => '12:00'],
+            ['day' => 2, 'start_time' => '13:00', 'end_time' => '14:50'],
+            ['day' => 5, 'start_time' => '13:00', 'end_time' => '15:50'],
         ];
 
         $i = 0;
         $week = 1;
 
         // The day that class starts its first period.
-        $startDate = Carbon::createFromFormat('d-m-Y', '5-12-2016');
+        $startDate = Carbon::createFromFormat('Y-m-d', '2017-02-14');
+        $endDate = Carbon::createFromFormat('Y-m-d', '2017-03-31');
         $weekStart = $startDate->startOfWeek();
+
+        $weekDiff = $startDate->diffInWeeks($endDate) + 1;
 
         $periods = [];
 
         // 10 is a number of week for each semester.
-        while ($week <= 10) {
+        while ($week <= $weekDiff) {
+
+            echo "Week No: $week <br>";
 
             foreach ($times as $time) {
                 // If the day is Monday, then just convert the start of the
                 // week into dateTime string.
-                if ($time['day'] == 'Monday') {
-                    $periods[$i]['date'] = $weekStart->toDateTimeString();
+                if ($time['day'] == 1) {
+                    $periods[$i]['date'] = $weekStart->toDateString();
                 } else {
                     // If it's not, find the date and convert it.
-                    $date = $weekStart->next($this->getDay($time['day']));
-                    $periods[$i]['date'] = $date->toDateTimeString();
+                    $date = $weekStart->next($time['day']);
+                    $periods[$i]['date'] = $date->toDateString();
                 }
                 $periods[$i]['start_time'] = $time['start_time'];
                 $periods[$i]['end_time'] = $time['end_time'];
 
+                echo "Date: " . $periods[$i]['date'] . "<br>";
+                echo "Start: " . $periods[$i]['start_time'] . "<br>";
+                echo "End: " . $periods[$i]['end_time'] . "<br>";
+
                 $i++;
+
+                echo "==== <br>";
             }
             // Do this for every week.
             $week++;
 
             // Reset the cursor back to start of week
             $weekStart = $weekStart->next()->startOfWeek();
+
+            echo "------------------------ <br>";
         }
 
-        return $periods;
+        //return $periods;
     }
 
     public function getDay($day)

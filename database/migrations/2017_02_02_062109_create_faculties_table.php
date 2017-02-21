@@ -14,9 +14,15 @@ class CreateFacultiesTable extends Migration
     public function up()
     {
         Schema::create('faculties', function (Blueprint $table) {
-            $table->increments('id');
+            $table->integer('id')->unsigned()->primary();
             $table->string('name');
             $table->timestamps();
+        });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreign('faculty_id')
+                  ->references('id')->on('faculties')
+                  ->onDelete('set null');
         });
     }
 

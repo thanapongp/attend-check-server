@@ -11,6 +11,9 @@
 // Font Awesome
 @import "vendor/bower_components/components-font-awesome/scss/font-awesome";
 
+// Datetimepicker
+@import "node_modules/eonasdan-bootstrap-datetimepicker/src/sass/bootstrap-datetimepicker-build";
+
 html, body {
     min-height: 100%;
 }
