@@ -51,18 +51,6 @@ function hoursRange($lower = 800, $upper = 1600, $step = 30, $format = '') {
     return $times;
 }
 
-function getSemester($value)
-{
-    switch ($value) {
-        case '1':
-            return 'ภาคต้น';
-        case '2':
-            return 'ภาคปลาย';
-        case '3':
-            return 'ภาคฤดูร้อน';
-    }
-}
-
 function convertThaiDateToYmd($string)
 {
     $months = [

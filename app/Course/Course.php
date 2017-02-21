@@ -25,6 +25,28 @@ class Course extends Model
         }
     }
 
+    public function semesterValue()
+    {
+        switch ($this->semester) {
+            case '1':
+                return 'ภาคต้น';
+            case '2':
+                return 'ภาคปลาย';
+            case '3':
+                return 'ภาคฤดูร้อน';
+        }
+    }
+
+    public function url()
+    {
+        $code = $this->code;
+        $semester = $this->semester();
+        $year = substr($this->year, -2);
+        $section = $this->section;
+
+        return "$code-$semester-$year-$section";
+    }
+
     public function periods()
     {
         return $this->hasMany('AttendCheck\Course\Period');

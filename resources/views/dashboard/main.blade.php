@@ -16,31 +16,43 @@
 	</div>
 
 	<div class="panel-body">
+
+	@if(session('status'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ไม่สามารถ Login ได้
+            </strong> 
+            <br> 
+            {{ session('status') }}
+        </div>
+        @endif
+
 		<table class="table">
 			<thead>
 				<th>รหัสวิชา</th><th>ชื่อวิชา</th><th>ปีการศึกษา</th><th>จัดการ</th>
 			</thead>
+			@if(!$courses->isEmpty())
 			<tbody>
+			@foreach($courses as $course)
 				<tr>
-					<td>1106209</td><td>Information System Security</td>
-					<td>2559 (ภาคปลาย)</td>
+					<td>{{$course->code}}</td><td>{{$course->name}} (Section {{$course->section}})</td>
+					<td>{{$course->year}} ({{$course->semester}})</td>
 					<td>
-						<a href="/dashboard/course/1106209-59" class="btn btn-raised-primary">
+						<a href="/dashboard/course/{{$course->url()}}" class="btn btn-raised-primary">
 							จัดการ
 						</a>
 					</td>
 				</tr>
-				<tr>
-					<td>1106501</td><td>Embeded Devuce Programming</td>
-					<td>2559 (ภาคปลาย)</td>
-					<td>
-						<button class="btn btn-raised-primary">
-							จัดการ
-						</button>
-					</td>
-				</tr>
+			@endforeach
 			</tbody>
+			@endif
 		</table>
+		@if($courses->isEmpty())
+		<h3 class="text-center">
+			คุณยังไม่มีรายวิชาในระบบ
+		</h3>
+		@endif
 	</div>
 </div>
 @endsection

@@ -67,6 +67,8 @@ class CourseController extends Controller
         $course = $this->repository->create($request->all());
 
         $this->repository->findAndEnrollStudent($course);
+
+        return redirect('/dashboard')->with('status', 'เพิ่มรายวิชาสำเร็จ');
     }
 
     /**

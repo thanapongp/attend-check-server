@@ -79,5 +79,8 @@ class CourseCRUDTest extends BrowserKitTest
         $this->seeInDatabase('users', ['username' => '5611401260', 'password' => null]);
 
         $this->seeInDatabase('enrollments', ['course_id' => $courseID]);
+
+        $this->seePageIs('/dashboard')
+             ->see('เพิ่มรายวิชาสำเร็จ');
     }
 }
