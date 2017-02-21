@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Integration;
 
 use AttendCheck\User;
 use Tests\BrowserKitTest;
@@ -22,7 +22,7 @@ class UserTest extends BrowserKitTest
             'title'    => 'Mr.',
             'name'     => 'Lorem',
             'lastname' => 'Ipsum',
-            'faculty_id' => '1',
+            'faculty_id' => '11',
             'type_id' => '3',
         ]);
 
@@ -33,7 +33,7 @@ class UserTest extends BrowserKitTest
             'title'    => 'Mr.',
             'name'     => 'Lorem',
             'lastname' => 'Ipsum',
-            'faculty_id' => '1',
+            'faculty_id' => '11',
             'type_id' => '3',
         ]);
 

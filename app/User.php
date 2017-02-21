@@ -45,11 +45,28 @@ class User extends Authenticatable
         return $this->belongsTo('AttendCheck\Faculty');
     }
 
+    public function courses()
+    {
+        return $this->hasMany('AttendCheck\Course\Course', 'teacher_id');
+    }
+
+    public function enrollments()
+    {
+        return $this->belongsToMany(
+            'AttendCheck\Course\Course', 'enrollments', 'student_id'
+        );
+    }
+
     public function approve()
     {
         if (! $this->active) {
             $this->active = true;
             $this->save();
         }
+    }
+
+    public function enroll($course)
+    {
+        $this->enrollments()->attach($course->id);
     }
 }

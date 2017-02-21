@@ -50,3 +50,18 @@ function hoursRange($lower = 800, $upper = 1600, $step = 30, $format = '') {
 
     return $times;
 }
+
+function convertThaiDateToYmd($string)
+{
+    $months = [
+        '', "ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."
+    ];
+
+    $stringArray = explode(' ', $string);
+
+    $Y = $stringArray[2];
+    $m = str_pad(array_search($stringArray[1], $months), 2, "0", STR_PAD_LEFT);
+    $d = str_pad($stringArray[0], 2, "0", STR_PAD_LEFT);
+
+    return "$Y-$m-$d";
+}

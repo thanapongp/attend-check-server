@@ -15,7 +15,7 @@ class FacultiesTableSeeder extends Seeder
         //DB::table('faculties')->truncate();
         
         DB::table('faculties')->insert([
-            ['name' => 'วิทยาศาสตร์']
+            ['id' => '11', 'name' => 'วิทยาศาสตร์']
         ]);
     }
 }
