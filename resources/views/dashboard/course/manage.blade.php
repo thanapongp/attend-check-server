@@ -63,7 +63,11 @@
 <script src="/js/clickablerow.js"></script>
 <script>
 $(document).ready(function(){
-    $('#studentstable').DataTable();
+    $('#studentstable').DataTable({
+    	'language' : {
+    		'url' : '//cdn.datatables.net/plug-ins/1.10.13/i18n/Thai.json'
+    	}
+    });
 });
 </script>
 @endsection
