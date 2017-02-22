@@ -9,35 +9,35 @@
 	<div class="form-group">
 		<label for="code" class="col-sm-3 control-label">รหัสวิชา</label>
 		<div class="col-sm-4">
-			<p class="form-control-static">1106209</p>
+			<p class="form-control-static">{{$course->code}}</p>
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label for="name" class="col-sm-3 control-label">ชื่อวิชา</label>
 		<div class="col-sm-4">
-			<p class="form-control-static">Information System Security</p>
+			<p class="form-control-static">{{$course->name}}</p>
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label for="section" class="col-sm-3 control-label">Section</label>
 		<div class="col-sm-4">
-			<p class="form-control-static">1</p>
+			<p class="form-control-static">{{$course->section}}</p>
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label for="semester" class="col-sm-3 control-label">ภาคการศึกษา</label>
 		<div class="col-sm-4">
-			<p class="form-control-static">ภาคปลาย</p>
+			<p class="form-control-static">{{$course->semester}}</p>
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label for="semester" class="col-sm-3 control-label">ปีการศึกษา</label>
 		<div class="col-sm-4">
-			<p class="form-control-static">2559</p>
+			<p class="form-control-static">{{$course->year}}</p>
 		</div>
 	</div>
 
@@ -57,23 +57,35 @@
 	<div class="form-group">
 		<label for="times" class="col-sm-3 control-label">เวลาเรียน</label>
 		<div class="col-sm-9">
+			@foreach($course->periods as $period)
 			<div class="form-inline">
-				<p class="form-control-static">วัน จันทร์ เวลา 9:00 ถึง 12:00 ห้อง SC412</p>
+				<p class="form-control-static">
+				วัน {{day($period->day)}} 
+				เวลา {{date('G:i', strtotime($period->start_time))}} 
+				ถึง {{date('G:i', strtotime($period->end_time))}} 
+				ห้อง {{$period->room}}</p>
 			</div>
+			@endforeach
 		</div>
 	</div>
+
+	{{ \Jenssegers\Date\Date::setLocale('th') }}
 
 	<div class="form-group">
 		<label for="start_date" class="col-sm-3 control-label">วันที่เริ่มเรียนคาบแรก</label>
 		<div class="col-sm-4">
-			<p class="form-control-static">26 ต.ค. 2016</p>
+			<p class="form-control-static">
+			{{(new \Jenssegers\Date\Date($course->start_date))->format('j F Y')}}
+			</p>
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label for="end_date" class="col-sm-3 control-label">วันที่เริ่มเรียนคาบสุดท้าย</label>
 		<div class="col-sm-4">
-			<p class="form-control-static">26 ม.ค. 2017</p>
+			<p class="form-control-static">
+				{{(new \Jenssegers\Date\Date($course->end_date))->format('j F Y')}}
+			</p>
 		</div>
 	</div>
 
@@ -82,18 +94,11 @@
 			<legend class="text-right">Option รายวิชา</legend>
 		</div>
 	</div>
-	
-	<div class="form-group">
-		<label for="start_date" class="col-sm-3 control-label">รูปแบบการสุ่มรายชื่อ</label>
-		<div class="col-sm-4">
-			<p class="form-control-static">สุ่มแบบคละ</p>
-		</div>
-	</div>
 
 	<div class="form-group">
 		<label for="late_time" class="col-sm-3 control-label">เวลาที่เข้าสายได้ (นาที)</label>
 		<div class="col-sm-4">
-			<p class="form-control-static">15</p>
+			<p class="form-control-static">{{$course->late_time}}</p>
 		</div>
 	</div>
 

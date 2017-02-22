@@ -56,4 +56,11 @@ class Course extends Model
     {
         return $this->hasMany('AttendCheck\Course\Schedule');
     }
+
+    public function students()
+    {
+        return $this->belongsToMany(
+            'AttendCheck\User', 'enrollments', 'course_id', 'student_id'
+        );
+    }
 }

@@ -6,12 +6,12 @@
 <h1 class="dashboard-title">
 	จัดการรายวิชา
 	<br>
-	<small>1106209 Information System Security (2559 ภาคปลาย Sec.1)</small>
+	<small>{{$course->code}} {{$course->name}} ({{$course->year}} {{$course->semester}} Sec.{{$course->section}})</small>
 </h1>
 
 <ol class="breadcrumb">
 	<li><a href="{{ url('/dashboard') }}">Dashboard</a></li>
-	<li class="active">1106209 Information System Security (2559 ภาคปลาย Sec.1)</li>
+	<li class="active">{{$course->code}} {{$course->name}} ({{$course->year}} {{$course->semester}} Sec.{{$course->section}})</li>
 </ol>
 
 <div class="panel panel-info dashboard-panel">
@@ -61,4 +61,9 @@
 
 @section('js')
 <script src="/js/clickablerow.js"></script>
+<script>
+$(document).ready(function(){
+    $('#studentstable').DataTable();
+});
+</script>
 @endsection

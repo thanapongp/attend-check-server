@@ -1,5 +1,11 @@
 <?php
 
+function day($value)
+{
+    $days = ['','อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+    return $days[$value];
+}
+
 /**
  * Get an array of days in a week.
  * 

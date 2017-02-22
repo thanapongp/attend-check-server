@@ -57,6 +57,11 @@ class User extends Authenticatable
         );
     }
 
+    public function fullname()
+    {
+        return $this->title . $this->name . ' ' . $this->lastname;
+    }
+
     public function approve()
     {
         if (! $this->active) {
