@@ -4,7 +4,7 @@
 	</button>
 	<div class="clearfix"></div>
 </div>
-<table class="table table-hover">
+<table class="table table-hover" id="schedulestable">
 	<thead>
 		<th>วันที่</th>
 		<th>เข้าเรียน/สาย/ขาด</th>
@@ -12,8 +12,8 @@
 		<th>ดูข้อมูล</th>
 	</thead>
 	<tbody>
-		@foreach($course->schedules as $schedule)
-		<tr class="clickable-row" 
+		@foreach($course->schedules()->ordered()->get() as $schedule)
+		<tr class="{{checkCurrentTimeInrange($schedule->start_date->toDateTimeString(), $schedule->end_date->toDateTimeString()) ? 'success ' : ''}}clickable-row" 
 		data-href="{{ url('/dashboard/course/'. $course->url() .'/'. $schedule->url()) }}">
 			{{ \Jenssegers\Date\Date::setLocale('th') }}
 			<td>

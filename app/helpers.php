@@ -83,3 +83,14 @@ function convertThaiDateToYmd($string)
 
     return "$Y-$m-$d";
 }
+
+function checkCurrentTimeInrange($start_date, $end_date)
+{
+  // Convert to timestamp
+  $start_ts = strtotime($start_date);
+  $end_ts = strtotime($end_date);
+  $user_ts = time();
+
+  // Check that user date is between start & end
+  return (($user_ts >= $start_ts) && ($user_ts <= $end_ts));
+}
