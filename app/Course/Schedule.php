@@ -21,7 +21,7 @@ class Schedule extends Model
 
     public function url()
     {
-        return $this->start_date->format('d-m-Y-H-m');
+        return $this->start_date->format('d-m-Y-H-i');
     }
 
     /**

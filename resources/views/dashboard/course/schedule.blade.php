@@ -6,19 +6,21 @@
 <h1 class="dashboard-title">
 	จัดการรายวิชา
 	<br>
-	<small>1106209 Information System Security (2559 ภาคปลาย Sec.1)</small>
+	<small>{{$course->code}} {{$course->name}} ({{$course->year}} {{$course->semester}} Sec.{{$course->section}})</small>
 </h1>
 
 <ol class="breadcrumb">
 	<li><a href="{{ url('/dashboard') }}">Dashboard</a></li>
-	<li><a href="{{ url('/dashboard/course/1106209-59') }}">1106209 Information System Security (2559 ภาคปลาย Sec.1)</a></li>
-	<li class="active">คาบ 29 พ.ค. 2017 9:00</li>
+	<li><a href="{{ url('/dashboard/course/'. $course->url()) }}">{{$course->code}} {{$course->name}} ({{$course->year}} {{$course->semester}} Sec.{{$course->section}})</a></li>
+	
+	{{ \Jenssegers\Date\Date::setLocale('th') }}
+	<li class="active">คาบ {{(new \Jenssegers\Date\Date($schedule->start_date))->format('j F Y H:i')}}</li>
 </ol>
 
 <div class="panel panel-info dashboard-panel">
 
 	<div class="panel-heading">
-		<span>คาบ 29 พ.ค. 2017 9:00</span>
+		<span>คาบ {{(new \Jenssegers\Date\Date($schedule->start_date))->format('j F Y H:i')}}</span>
 	</div>
 
 	<div class="panel-body">
