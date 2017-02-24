@@ -57,6 +57,13 @@ class User extends Authenticatable
         );
     }
 
+    public function attendances()
+    {
+        return $this->belongsToMany(
+            'AttendCheck\Course\Schedule', 'attendances', 'student_id', 'schedule_id'
+        )->withPivot('late', 'in_time')->using('AttendCheck\Course\Attendance');
+    }
+
     public function fullname()
     {
         return $this->title . $this->name . ' ' . $this->lastname;
@@ -68,6 +75,38 @@ class User extends Authenticatable
             $this->active = true;
             $this->save();
         }
+    }
+
+    public function isAttended($schedule)
+    {
+        return $this->attendances->contains(function ($attendance) use ($schedule)  {
+            return $attendance->pivot->schedule_id == $schedule->id;
+        });
+    }
+
+    public function attend($schedule)
+    {
+        $now = \Carbon\Carbon::now();
+        $starttime = $schedule->start_date;
+        $latetime = $schedule->course->latetime;
+
+        $isLate = ($now->diffInMinutes($starttime->addMinute($latetime))) > $latetime;
+        $in_time = $now->toDateTimeString();
+
+        $this->attendances()->attach($schedule->id, [
+            'late' => $isLate,
+            'in_time' => $in_time
+        ]);
+    }
+
+    public function attendStatus($schedule)
+    {
+        if (! $this->isAttended($schedule)) {
+            return 'ยังไม่เข้าเรียน';
+        }
+
+        return $this->attendances->where('id', $schedule->id)->first()->pivot->late 
+                ? 'สาย' : 'เข้าเรียน';
     }
 
     public function enroll($course)

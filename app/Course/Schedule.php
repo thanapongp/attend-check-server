@@ -38,6 +38,13 @@ class Schedule extends Model
         return $this->belongsTo('AttendCheck\Course\Course');
     }
 
+    public function attendances()
+    {
+        return $this->belongsToMany(
+            'AttendCheck\Course\User', 'attendances', 'schedule_id', 'student_id'
+        )->withPivot('late', 'in_time')->using('AttendCheck\Course\Attendance');
+    }
+
     /**
      * Scope a query to order schedule to make 
      * passed date comes after upcoming date.

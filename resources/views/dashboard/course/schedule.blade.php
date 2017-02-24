@@ -38,10 +38,10 @@
 						{{$student->username}} {{$student->fullname()}}
 						</a>
 					</td>
-					<td>{{-- <span class="text-success">เข้าเรียน</span> --}}</td>
+					<td>{{$student->attendStatus($schedule)}}</td>
 					<td>
-						<span class="text-success">
-							<i class="check-button fa fa-2x fa-check" 
+						<span class="text-{{$student->isAttended($schedule) ? 'success' : 'danger'}}">
+							<i class="check-button fa fa-2x{{$student->isAttended($schedule) ? ' fa-check' : ' fa-times'}}" 
 							data-stuid="5611400924"></i>
 						</span>
 					</td>
