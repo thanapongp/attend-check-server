@@ -20,7 +20,7 @@
 <div class="panel panel-info dashboard-panel">
 
 	<div class="panel-heading">
-		<span>คาบ {{(new \Jenssegers\Date\Date($schedule->start_date))->format('j F Y H:i')}}</span>
+		<span>คาบ {{(new \Jenssegers\Date\Date($schedule->start_date))->format('j F Y H:i')}} ห้อง {{$schedule->room}}</span>
 	</div>
 
 	<div class="panel-body">

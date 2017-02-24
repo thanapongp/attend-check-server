@@ -17,7 +17,7 @@
 		data-href="{{ url('/dashboard/course/'. $course->url() .'/'. $schedule->url()) }}">
 			{{ \Jenssegers\Date\Date::setLocale('th') }}
 			<td>
-			{{(new \Jenssegers\Date\Date($schedule->start_date))->format('j F Y H:i')}}
+			{{(new \Jenssegers\Date\Date($schedule->start_date))->format('j F Y H:i')}} ห้อง {{$schedule->room}}
 			</td>
 			<td></td>
 			<td></td>
