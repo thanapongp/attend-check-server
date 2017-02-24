@@ -13,7 +13,7 @@
 	</thead>
 	<tbody>
 		@foreach($course->schedules()->ordered()->get() as $schedule)
-		<tr class="{{checkCurrentTimeInrange($schedule->start_date->toDateTimeString(), $schedule->end_date->toDateTimeString()) ? 'success ' : ''}}clickable-row" 
+		<tr class="{{$schedule->inProgress() ? 'success ' : ''}}clickable-row" 
 		data-href="{{ url('/dashboard/course/'. $course->url() .'/'. $schedule->url()) }}">
 			{{ \Jenssegers\Date\Date::setLocale('th') }}
 			<td>

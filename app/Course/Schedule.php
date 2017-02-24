@@ -24,6 +24,20 @@ class Schedule extends Model
         return $this->start_date->format('d-m-Y-H-i');
     }
 
+    public function inProgress()
+    {
+        return checkCurrentTimeInrange(
+            $this->start_date->toDateTimeString(), 
+            $this->end_date->toDateTimeString(),
+            date('Y-m-d H:i:s')
+        );
+    }
+
+    public function course()
+    {
+        return $this->belongsTo('AttendCheck\Course\Course');
+    }
+
     /**
      * Scope a query to order schedule to make 
      * passed date comes after upcoming date.

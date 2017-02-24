@@ -31,16 +31,23 @@
 				<th>เช็คชื่อ</th>
 			</thead>
 			<tbody>
+				@foreach($course->students as $student)
 				<tr>
-					<td><a href="{{ url('/dashboard/student/5611400924') }}">5611400924 นายธนะพงศ์ ประทุมชาติ</a></td>
-					<td><span class="text-success">เข้าเรียน</span></td>
+					<td>
+						<a href="{{ url('/dashboard/student/'. $student->username) }}">
+						{{$student->username}} {{$student->fullname()}}
+						</a>
+					</td>
+					<td>{{-- <span class="text-success">เข้าเรียน</span> --}}</td>
 					<td>
 						<span class="text-success">
-							<i class="check-button fa fa-2x fa-check" data-stuid="5611400924"></i>
+							<i class="check-button fa fa-2x fa-check" 
+							data-stuid="5611400924"></i>
 						</span>
 					</td>
 				</tr>
-				<tr>
+				@endforeach
+{{-- 				<tr>
 					<td><a href="{{ url('/dashboard/student/5611400924') }}">5611400939 นายธนัช ประทุมชาติ</a></td>
 					<td><span class="text-danger">ยังไม่เข้าเรียน</span></td>
 					<td>
@@ -57,7 +64,7 @@
 							<i class="check-button fa fa-2x fa-check" data-stuid="5611400924"></i>
 						</span>
 					</td>
-				</tr>
+				</tr> --}}
 			</tbody>
 		</table>
 	</div>
