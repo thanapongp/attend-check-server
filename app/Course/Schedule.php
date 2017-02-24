@@ -34,10 +34,10 @@ class Schedule extends Model
     public function scopeOrdered($query)
     {
         return $query->orderByRaw("
-            (CASE WHEN DATE(start_date) > DATE(NOW())
+            (CASE WHEN end_date > NOW()
                 THEN 1
                 ELSE 0
-                END) DESC, start_date ASC
+                END) DESC, end_date ASC
             ");
     }
 }
