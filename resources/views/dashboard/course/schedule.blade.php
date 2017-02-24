@@ -24,7 +24,7 @@
 	</div>
 
 	<div class="panel-body">
-		<table class="table table-hover">
+		<table class="table table-hover" id="studentstable">
 			<thead>
 				<th>ชื่อ</th>
 				<th>สถานะ</th>
@@ -54,24 +54,6 @@
 					</td>
 				</tr>
 				@endforeach
-{{-- 				<tr>
-					<td><a href="{{ url('/dashboard/student/5611400924') }}">5611400939 นายธนัช ประทุมชาติ</a></td>
-					<td><span class="text-danger">ยังไม่เข้าเรียน</span></td>
-					<td>
-						<span class="text-danger">
-							<i class="check-button fa fa-2x fa-times" data-stuid="5611400924"></i>
-						</span>
-					</td>
-				</tr>
-				<tr>
-					<td><a href="{{ url('/dashboard/student/5611400924') }}">5611400946 นายธัชตะวัน จันทร์จำลอง</a></td>
-					<td><span class="text-warning">สาย</span></td>
-					<td>
-						<span class="text-success">
-							<i class="check-button fa fa-2x fa-check" data-stuid="5611400924"></i>
-						</span>
-					</td>
-				</tr> --}}
 			</tbody>
 		</table>
 	</div>
@@ -79,4 +61,13 @@
 @endsection
 
 @section('js')
+<script>
+$(document).ready(function(){
+    $('#studentstable').DataTable({
+    	'language' : {
+    		'url' : '//cdn.datatables.net/plug-ins/1.10.13/i18n/Thai.json'
+    	}
+    });
+});
+</script>
 @endsection
