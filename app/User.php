@@ -86,6 +86,10 @@ class User extends Authenticatable
 
     public function attend($schedule)
     {
+        if ($this->isAttended($schedule)) {
+            return $this->attendances()->detach($schedule->id);
+        }
+
         $now = \Carbon\Carbon::now();
         $starttime = $schedule->start_date;
         $latetime = $schedule->course->latetime;

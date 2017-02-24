@@ -19,7 +19,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     Route::get('/course/{course}', 'CourseController@show');
     Route::get('/course/{course}/{schedule}', 'CourseController@showSchedule');
     
-    // Route::get('/course/1106209-59', 'CourseController@show');
+    Route::post('/manual-check', 'AttendanceController@attendClass');
     // Route::get('/course/1106209-59/1', 'CourseController@showSchedule');
 
     // User

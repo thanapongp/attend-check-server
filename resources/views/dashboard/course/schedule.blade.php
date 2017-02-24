@@ -40,10 +40,17 @@
 					</td>
 					<td>{{$student->attendStatus($schedule)}}</td>
 					<td>
-						<span class="text-{{$student->isAttended($schedule) ? 'success' : 'danger'}}">
-							<i class="check-button fa fa-2x{{$student->isAttended($schedule) ? ' fa-check' : ' fa-times'}}" 
-							data-stuid="5611400924"></i>
-						</span>
+						<form action="{{ url('/dashboard/manual-check') }}" method="POST">
+						{{csrf_field()}}
+						<a href="#" onclick="$(this).closest('form').submit(); return false;">
+							<span class="text-{{$student->isAttended($schedule) ? 'success' : 'danger'}}">
+								<i class="check-button fa fa-2x{{$student->isAttended($schedule) ? ' fa-check' : ' fa-times'}}" 
+								data-stuid="5611400924"></i>
+							</span>
+						</a>
+						<input type="hidden" name="userID" value="{{$student->id}}">
+						<input type="hidden" name="scheduleID" value="{{$schedule->id}}">
+						</form>
 					</td>
 				</tr>
 				@endforeach
