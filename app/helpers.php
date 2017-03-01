@@ -6,6 +6,19 @@ function day($value)
     return $days[$value];
 }
 
+function getSemester($semester)
+{
+    switch ($semester) 
+    {
+        case '1':
+            return 'ภาคต้น';
+        case '2':
+            return 'ภาคปลาย';
+        case '3':
+            return 'ภาคฤดูร้อน';
+    }
+}
+
 /**
  * Get an array of days in a week.
  * 
