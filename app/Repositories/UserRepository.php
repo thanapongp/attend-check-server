@@ -8,14 +8,23 @@ class UserRepository
 {
     public function createUsersFromApiResponse(array $users)
     {
-        return collect($users)->filter(function ($user) {
-            return (User::where('username', $user->STUDENTCODE)->first() == null);
+        // First, we create the account for student that don't have an account.
+        $this->createNewUsers($users);
 
-        })->map(function ($user) {
-            return User::create([
+        // And then return the complete collection of users consists of
+        // users that already have an account and new users
+        return collect($users)->map(function ($user) {
+            return User::where('username', $user->STUDENTCODE)->first();
+        });
+    }
+
+    public function createNewUsers(array $users)
+    {
+        collect($users)->reject(function ($user) {
+            return User::where('username', $user->STUDENTCODE)->exists();
+        })->each(function ($user) {
+            User::create([
                 'username' => $user->STUDENTCODE,
-                'password' => null,
-                'email' => null,
                 'title' => $user->PREFIXNAME,
                 'name' => $user->STUDENTNAME,
                 'lastname' => $user->STUDENTSURNAME,
