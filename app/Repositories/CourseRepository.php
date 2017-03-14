@@ -80,6 +80,18 @@ class CourseRepository
         return $course->fresh();
     }
 
+    public function findFromURL($url)
+    {
+        $url = explode('-', $url);
+
+        return Course::where([
+            ['code', $url[0]],
+            ['semester', semesterValue($url[1])],
+            ['year', '25' . $url[2]],
+            ['section', $url[3]],
+        ])->firstOrFail();
+    }
+
     /**
      * Fetch enrolled students from TQF and save it to our database.
      * 

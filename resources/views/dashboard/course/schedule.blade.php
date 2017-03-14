@@ -6,56 +6,54 @@
 <h1 class="dashboard-title">
 	จัดการรายวิชา
 	<br>
-	<small>1106209 Information System Security (2559 ภาคปลาย Sec.1)</small>
+	<small>{{$course->code}} {{$course->name}} ({{$course->year}} {{$course->semester}} Sec.{{$course->section}})</small>
 </h1>
 
 <ol class="breadcrumb">
 	<li><a href="{{ url('/dashboard') }}">Dashboard</a></li>
-	<li><a href="{{ url('/dashboard/course/1106209-59') }}">1106209 Information System Security (2559 ภาคปลาย Sec.1)</a></li>
-	<li class="active">คาบ 29 พ.ค. 2017 9:00</li>
+	<li><a href="{{ url('/dashboard/course/'. $course->url()) }}">{{$course->code}} {{$course->name}} ({{$course->year}} {{$course->semester}} Sec.{{$course->section}})</a></li>
+	
+	{{ \Jenssegers\Date\Date::setLocale('th') }}
+	<li class="active">คาบ {{(new \Jenssegers\Date\Date($schedule->start_date))->format('j F Y H:i')}}</li>
 </ol>
 
 <div class="panel panel-info dashboard-panel">
 
 	<div class="panel-heading">
-		<span>คาบ 29 พ.ค. 2017 9:00</span>
+		<span>คาบ {{(new \Jenssegers\Date\Date($schedule->start_date))->format('j F Y H:i')}} ห้อง {{$schedule->room}}</span>
 	</div>
 
 	<div class="panel-body">
-		<table class="table table-hover">
+		<table class="table table-hover" id="studentstable">
 			<thead>
 				<th>ชื่อ</th>
 				<th>สถานะ</th>
 				<th>เช็คชื่อ</th>
 			</thead>
 			<tbody>
+				@foreach($course->students as $student)
 				<tr>
-					<td><a href="{{ url('/dashboard/student/5611400924') }}">5611400924 นายธนะพงศ์ ประทุมชาติ</a></td>
-					<td><span class="text-success">เข้าเรียน</span></td>
 					<td>
-						<span class="text-success">
-							<i class="check-button fa fa-2x fa-check" data-stuid="5611400924"></i>
-						</span>
+						<a href="{{ url('/dashboard/student/'. $student->username) }}">
+						{{$student->username}} {{$student->fullname()}}
+						</a>
+					</td>
+					<td>{{$student->attendStatus($schedule)}}</td>
+					<td>
+						<form action="{{ url('/dashboard/manual-check') }}" method="POST">
+						{{csrf_field()}}
+						<a href="#" onclick="$(this).closest('form').submit(); return false;">
+							<span class="text-{{$student->isAttended($schedule) ? 'success' : 'danger'}}">
+								<i class="check-button fa fa-2x{{$student->isAttended($schedule) ? ' fa-check' : ' fa-times'}}" 
+								data-stuid="5611400924"></i>
+							</span>
+						</a>
+						<input type="hidden" name="userID" value="{{$student->id}}">
+						<input type="hidden" name="scheduleID" value="{{$schedule->id}}">
+						</form>
 					</td>
 				</tr>
-				<tr>
-					<td><a href="{{ url('/dashboard/student/5611400924') }}">5611400939 นายธนัช ประทุมชาติ</a></td>
-					<td><span class="text-danger">ยังไม่เข้าเรียน</span></td>
-					<td>
-						<span class="text-danger">
-							<i class="check-button fa fa-2x fa-times" data-stuid="5611400924"></i>
-						</span>
-					</td>
-				</tr>
-				<tr>
-					<td><a href="{{ url('/dashboard/student/5611400924') }}">5611400946 นายธัชตะวัน จันทร์จำลอง</a></td>
-					<td><span class="text-warning">สาย</span></td>
-					<td>
-						<span class="text-success">
-							<i class="check-button fa fa-2x fa-check" data-stuid="5611400924"></i>
-						</span>
-					</td>
-				</tr>
+				@endforeach
 			</tbody>
 		</table>
 	</div>
@@ -63,4 +61,13 @@
 @endsection
 
 @section('js')
+<script>
+$(document).ready(function(){
+    $('#studentstable').DataTable({
+    	'language' : {
+    		'url' : '//cdn.datatables.net/plug-ins/1.10.13/i18n/Thai.json'
+    	}
+    });
+});
+</script>
 @endsection

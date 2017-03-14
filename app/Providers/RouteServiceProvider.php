@@ -3,6 +3,7 @@
 namespace AttendCheck\Providers;
 
 use Illuminate\Support\Facades\Route;
+use AttendCheck\Repositories\CourseRepository;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
@@ -23,9 +24,11 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-
         parent::boot();
+
+        Route::bind('course', function ($value) {
+            return resolve(CourseRepository::class)->findFromURL($value);
+        });
     }
 
     /**

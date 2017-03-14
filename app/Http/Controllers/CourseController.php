@@ -2,8 +2,10 @@
 
 namespace AttendCheck\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use AttendCheck\Api\Requestor;
+use AttendCheck\Course\Course;
 use AttendCheck\Repositories\CourseRepository as Repository;
 
 class CourseController extends Controller
@@ -77,9 +79,9 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id = '')
+    public function show(Course $course)
     {
-        return view('dashboard.course.manage');
+        return view('dashboard.course.manage', compact('course'));
     }
 
     /**
@@ -87,9 +89,12 @@ class CourseController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function showSchedule()
+    public function showSchedule(Course $course, $schedule)
     {
-        return view('dashboard.course.schedule');
+        $date = Carbon::createFromFormat('d-m-Y-H-i', $schedule);
+        $schedule = $course->schedules()->where('start_date', $date)->first();
+
+        return view('dashboard.course.schedule', compact('course', 'schedule'));
     }
 
     /**

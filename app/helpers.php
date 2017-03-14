@@ -1,5 +1,24 @@
 <?php
 
+function day($value)
+{
+    $days = ['','อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+    return $days[$value];
+}
+
+function getSemester($semester)
+{
+    switch ($semester) 
+    {
+        case '1':
+            return 'ภาคต้น';
+        case '2':
+            return 'ภาคปลาย';
+        case '3':
+            return 'ภาคฤดูร้อน';
+    }
+}
+
 /**
  * Get an array of days in a week.
  * 
@@ -16,6 +35,18 @@ function getDaysOfWeek()
 		'Friday' => 'ศุกร์',
 		'Saturday' => 'เสาร์',
 	];
+}
+
+function semesterValue($value)
+{
+    switch ($value) {
+        case '1':
+            return 'ภาคต้น';
+        case '2':
+            return 'ภาคปลาย';
+        case '3':
+            return 'ภาคฤดูร้อน';
+    }
 }
 
 /**
@@ -64,4 +95,15 @@ function convertThaiDateToYmd($string)
     $d = str_pad($stringArray[0], 2, "0", STR_PAD_LEFT);
 
     return "$Y-$m-$d";
+}
+
+function checkCurrentTimeInrange($start_date, $end_date, $input_time)
+{
+    // Convert to timestamp
+    $start_ts = strtotime($start_date);
+    $end_ts = strtotime($end_date);
+    $user_ts = strtotime($input_time);
+
+    // Check that user date is between start & end
+    return (($user_ts >= $start_ts) && ($user_ts <= $end_ts));
 }

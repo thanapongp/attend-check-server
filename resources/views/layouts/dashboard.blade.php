@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>@yield('title') | AttendCheck</title>
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
+    @yield('css')
 </head>
 <body class="dashboard">
     @include('layouts.navbar')
