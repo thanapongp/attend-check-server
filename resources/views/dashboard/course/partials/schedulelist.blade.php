@@ -4,7 +4,7 @@
 	</button>
 	<div class="clearfix"></div>
 </div>
-<table class="table table-hover">
+<table class="table table-hover" id="schedulestable">
 	<thead>
 		<th>วันที่</th>
 		<th>เข้าเรียน/สาย/ขาด</th>
@@ -12,12 +12,12 @@
 		<th>ดูข้อมูล</th>
 	</thead>
 	<tbody>
-		@foreach($course->schedules as $schedule)
-		<tr class="clickable-row" 
+		@foreach($course->schedules()->ordered()->get() as $schedule)
+		<tr class="{{$schedule->inProgress() ? 'success ' : ''}}clickable-row" 
 		data-href="{{ url('/dashboard/course/'. $course->url() .'/'. $schedule->url()) }}">
 			{{ \Jenssegers\Date\Date::setLocale('th') }}
 			<td>
-			{{(new \Jenssegers\Date\Date($schedule->start_date))->format('j F Y H:i')}}
+			{{(new \Jenssegers\Date\Date($schedule->start_date))->format('j F Y H:i')}} ห้อง {{$schedule->room}}
 			</td>
 			<td></td>
 			<td></td>

@@ -21,6 +21,44 @@ class Schedule extends Model
 
     public function url()
     {
-        return $this->start_date->format('d-m-Y-H-m');
+        return $this->start_date->format('d-m-Y-H-i');
+    }
+
+    public function inProgress()
+    {
+        return checkCurrentTimeInrange(
+            $this->start_date->toDateTimeString(), 
+            $this->end_date->toDateTimeString(),
+            date('Y-m-d H:i:s')
+        );
+    }
+
+    public function course()
+    {
+        return $this->belongsTo('AttendCheck\Course\Course');
+    }
+
+    public function attendances()
+    {
+        return $this->belongsToMany(
+            'AttendCheck\Course\User', 'attendances', 'schedule_id', 'student_id'
+        )->withPivot('late', 'in_time')->using('AttendCheck\Course\Attendance');
+    }
+
+    /**
+     * Scope a query to order schedule to make 
+     * passed date comes after upcoming date.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOrdered($query)
+    {
+        return $query->orderByRaw("
+            (CASE WHEN end_date > NOW()
+                THEN 1
+                ELSE 0
+                END) DESC, end_date ASC
+            ");
     }
 }

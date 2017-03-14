@@ -61,6 +61,6 @@ class Course extends Model
     {
         return $this->belongsToMany(
             'AttendCheck\User', 'enrollments', 'course_id', 'student_id'
-        );
+        )->using('AttendCheck\Course\Attendance');
     }
 }
