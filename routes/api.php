@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::post('/register', 'Api\DevicesController@register');
+
+Route::middleware('auth:mobileapp')->get('/user', function (Request $request) {
     return $request->user();
 });
