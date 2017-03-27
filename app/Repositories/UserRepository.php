@@ -33,4 +33,14 @@ class UserRepository
             ]);
         });
     }
+
+    public function getUserDataForMobileApp(User $user)
+    {
+        return User::with(
+            'device', 
+            'attendances', 
+            'enrollments.schedules', 
+            'enrollments.periods'
+        )->find($user->id);
+    }
 }

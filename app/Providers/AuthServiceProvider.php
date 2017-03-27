@@ -2,7 +2,10 @@
 
 namespace AttendCheck\Providers;
 
+use AttendCheck\Auth\MobileAppGuard;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use AttendCheck\Auth\MobileUserProvider;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -25,6 +28,14 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Auth::extend('apptoken', function ($app, $name, array $config) {
+            return new MobileAppGuard(
+                Auth::createUserProvider($config['provider']), $app->make('request')
+            );
+        });
+
+        Auth::provider('devices', function ($app, array $config) {
+            return new MobileUserProvider($config['model']);
+        });
     }
 }

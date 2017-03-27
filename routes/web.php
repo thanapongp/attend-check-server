@@ -1,7 +1,9 @@
 <?php
 
 Route::get('/', function () { return redirect('/login'); });
-Route::get('/test', 'TestController@create');
+Route::get('/test', function () {
+    return \AttendCheck\User::find(140)->enrollments()->toSql();
+});
 
 Auth::routes();
 Route::get('/register-completed', 'Auth\RegisterController@showRegistrationCompletedPage');
