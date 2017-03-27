@@ -64,6 +64,11 @@ class User extends Authenticatable
         )->withPivot('late', 'in_time')->using('AttendCheck\Course\Attendance');
     }
 
+    public function device()
+    {
+        return $this->hasMany('AttendCheck\Device', 'owner_id');
+    }
+
     public function fullname()
     {
         return $this->title . $this->name . ' ' . $this->lastname;

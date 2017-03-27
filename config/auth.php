@@ -45,6 +45,11 @@ return [
             'driver' => 'token',
             'provider' => 'users',
         ],
+
+        'mobileapp' => [
+            'driver' => 'apptoken',
+            'provider' => 'devices',
+        ],
     ],
 
     /*
@@ -70,10 +75,10 @@ return [
             'model' => AttendCheck\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'devices' => [
+            'driver' => 'devices',
+            'model' => AttendCheck\User::class,
+        ],
     ],
 
     /*
