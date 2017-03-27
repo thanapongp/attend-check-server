@@ -2,9 +2,7 @@
 
 Route::get('/', function () { return redirect('/login'); });
 Route::get('/test', function () {
-    // return AttendCheck\User::with('device', 'attendances', 'enrollments.schedules', 'enrollments.periods')->find(139)->toArray();
-    return (new \AttendCheck\Repositories\UserRepository())
-            ->getUserDataForMobileApp(\AttendCheck\User::find(140));
+    return \AttendCheck\User::find(140)->enrollments()->toSql();
 });
 
 Auth::routes();
