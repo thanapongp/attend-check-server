@@ -24,6 +24,10 @@
 	</div>
 
 	<div class="panel-body">
+		<div style="float: right; margin-bottom: 1em;">
+			<input class="form-control" type="text" placeholder="ค้นหา" 
+			onkeyup="search(this.value)" style="width: 250px">
+		</div>
 		<table class="table table-hover" id="studentstable">
 			<thead>
 				<th>ชื่อ</th>
@@ -93,6 +97,16 @@ function changeStatusText(response, studentID) {
 	$("i[data-stuid="+studentID+"]").toggleClass("fa-check fa-times")
 	.parent()
 	.toggleClass("text-success text-danger");
+}
+
+function search(value) {
+	$('td:first-child').each(function () {
+		if ($(this).text().includes(value)) {
+			$(this).parent().show();
+		} else {
+			$(this).parent().hide();
+		}
+	});
 }
 </script>
 @endsection
