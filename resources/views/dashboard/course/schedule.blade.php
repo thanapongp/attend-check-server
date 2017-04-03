@@ -90,6 +90,8 @@ function changeStatusText(response, studentID) {
 	$("i[data-stuid="+studentID+"]").toggleClass("fa-check fa-times")
 	.parent()
 	.toggleClass("text-success text-danger");
+
+	toastr.success('เช็คชื่อสำเร็จ!');
 }
 </script>
 @endsection
