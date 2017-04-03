@@ -73,16 +73,19 @@ function manualCheck(e, studentID, scheduleID) {
 }
 
 function changeStatusText(response, studentID) {
-	if (response.data.includes("check")) {
+	if (response.data.includes("check") && response.data != "uncheck") {
 		var innertext = 'เข้าเรียน';
+		toastr.success('เช็คชื่อสำเร็จ!');
 	}
 
 	if (response.data.includes("late")) {
 		var innertext = 'สาย';
+		toastr.success('เช็คชื่อสำเร็จ!');
 	}
 
 	if (response.data == "uncheck") {
 		var innertext = 'ยังไม่เข้าเรียน';
+		toastr.warning('ยกเลิกการเช็คชื่อสำเร็จ!');
 	}
 
 	$("td[data-stuid="+studentID+"]").html(innertext);
@@ -90,8 +93,6 @@ function changeStatusText(response, studentID) {
 	$("i[data-stuid="+studentID+"]").toggleClass("fa-check fa-times")
 	.parent()
 	.toggleClass("text-success text-danger");
-
-	toastr.success('เช็คชื่อสำเร็จ!');
 }
 </script>
 @endsection
