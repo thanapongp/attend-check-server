@@ -17,6 +17,7 @@
   "dependencies": {
     "datatables.net": "^1.10.13",
     "datatables.net-bs": "^1.10.13",
-    "eonasdan-bootstrap-datetimepicker": "Eonasdan/bootstrap-datetimepicker"
+    "eonasdan-bootstrap-datetimepicker": "Eonasdan/bootstrap-datetimepicker",
+    "toastr": "^2.1.2"
   }
 }
