@@ -15,8 +15,6 @@ class AttendanceController extends Controller
         $user = User::find($request->userID);
         $schedule = Schedule::find($request->scheduleID);
 
-        $user->attend($schedule);
-
-        return redirect()->back();
+        return $user->attend($schedule);
     }
 }

@@ -61,7 +61,7 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(
             'AttendCheck\Course\Schedule', 'attendances', 'student_id', 'schedule_id'
-        )->withPivot('late', 'in_time')->using('AttendCheck\Course\Attendance');
+        )->withPivot('in_time')->using('AttendCheck\Course\Attendance');
     }
 
     public function device()
@@ -92,7 +92,8 @@ class User extends Authenticatable
     public function attend($schedule)
     {
         if ($this->isAttended($schedule)) {
-            return $this->attendances()->detach($schedule->id);
+            $this->attendances()->detach($schedule->id);
+            return 'uncheck';
         }
 
         $now = \Carbon\Carbon::now();
@@ -103,9 +104,12 @@ class User extends Authenticatable
         $in_time = $now->toDateTimeString();
 
         $this->attendances()->attach($schedule->id, [
-            'late' => $isLate,
             'in_time' => $in_time
         ]);
+
+        $lastInsertID = \DB::getPdo()->lastInsertId();
+
+        return $isLate ? 'late'.$lastInsertID : 'check'.$lastInsertID;
     }
 
     public function attendStatus($schedule)
@@ -114,8 +118,16 @@ class User extends Authenticatable
             return 'ยังไม่เข้าเรียน';
         }
 
-        return $this->attendances->where('id', $schedule->id)->first()->pivot->late 
-                ? 'สาย' : 'เข้าเรียน';
+        $schedule = $this->attendances->where('id', $schedule->id)->first();
+
+        $starttime = $schedule->start_date;
+        $latetime = $schedule->course->latetime;
+
+        $inTime = $schedule->pivot->in_time;
+
+        $isLate = ($inTime->diffInMinutes($starttime->addMinute($latetime))) > $latetime;
+
+        return $isLate ? 'สาย' : 'เข้าเรียน';
     }
 
     public function enroll($course)

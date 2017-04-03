@@ -38,19 +38,14 @@
 						{{$student->username}} {{$student->fullname()}}
 						</a>
 					</td>
-					<td>{{$student->attendStatus($schedule)}}</td>
+					<td data-stuid="{{$student->id}}">{{$student->attendStatus($schedule)}}</td>
 					<td>
-						<form action="{{ url('/dashboard/manual-check') }}" method="POST">
-						{{csrf_field()}}
-						<a href="#" onclick="$(this).closest('form').submit(); return false;">
+						<a href="#" onclick="manualCheck(event, {{$student->id}}, {{$schedule->id}})">
 							<span class="text-{{$student->isAttended($schedule) ? 'success' : 'danger'}}">
 								<i class="check-button fa fa-2x{{$student->isAttended($schedule) ? ' fa-check' : ' fa-times'}}" 
-								data-stuid="5611400924"></i>
+								data-stuid="{{$student->id}}"></i>
 							</span>
 						</a>
-						<input type="hidden" name="userID" value="{{$student->id}}">
-						<input type="hidden" name="scheduleID" value="{{$schedule->id}}">
-						</form>
 					</td>
 				</tr>
 				@endforeach
@@ -61,13 +56,40 @@
 @endsection
 
 @section('js')
-<script>
-$(document).ready(function(){
-    $('#studentstable').DataTable({
-    	'language' : {
-    		'url' : '//cdn.datatables.net/plug-ins/1.10.13/i18n/Thai.json'
-    	}
-    });
-});
+<script type="text/javascript">
+function manualCheck(e, studentID, scheduleID) {
+	e.preventDefault();
+
+	axios.post('/dashboard/manual-check', {
+		userID: studentID,
+		scheduleID: scheduleID
+	})
+	.then(function (response) {
+		changeStatusText(response, studentID);
+	})
+	.catch(function (error) {
+		console.log(error);
+	});
+}
+
+function changeStatusText(response, studentID) {
+	if (response.data.includes("check")) {
+		var innertext = 'เข้าเรียน';
+	}
+
+	if (response.data.includes("late")) {
+		var innertext = 'สาย';
+	}
+
+	if (response.data == "uncheck") {
+		var innertext = 'ยังไม่เข้าเรียน';
+	}
+
+	$("td[data-stuid="+studentID+"]").html(innertext);
+
+	$("i[data-stuid="+studentID+"]").toggleClass("fa-check fa-times")
+	.parent()
+	.toggleClass("text-success text-danger");
+}
 </script>
 @endsection
