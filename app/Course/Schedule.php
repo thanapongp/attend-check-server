@@ -41,8 +41,8 @@ class Schedule extends Model
     public function attendances()
     {
         return $this->belongsToMany(
-            'AttendCheck\Course\User', 'attendances', 'schedule_id', 'student_id'
-        )->withPivot('late', 'in_time')->using('AttendCheck\Course\Attendance');
+            'AttendCheck\User', 'attendances', 'schedule_id', 'student_id'
+        )->withPivot('in_time')->using('AttendCheck\Course\Attendance');
     }
 
     /**
