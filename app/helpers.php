@@ -107,3 +107,15 @@ function checkCurrentTimeInrange($start_date, $end_date, $input_time)
     // Check that user date is between start & end
     return (($user_ts >= $start_ts) && ($user_ts <= $end_ts));
 }
+
+if (! function_exists('current_user')) {
+    /**
+     * Get the current user instance.
+     * 
+     * @return Mixed
+     */
+    function current_user()
+    {
+        return \Illuminate\Support\Facades\Auth::user();
+    }
+}

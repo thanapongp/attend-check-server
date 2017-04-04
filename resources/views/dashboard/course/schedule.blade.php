@@ -87,6 +87,8 @@
 var firstToken = '';
 
 function getFirstToken(e, scheduleID) {
+	e.preventDefault();
+	
 	if (firstToken == '') {
 		axios.post('/dashboard/enable-firstcheck', {
 			scheduleID: scheduleID
