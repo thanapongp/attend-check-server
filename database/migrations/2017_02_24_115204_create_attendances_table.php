@@ -18,6 +18,7 @@ class CreateAttendancesTable extends Migration
             $table->integer('schedule_id')->unsigned();
             $table->integer('student_id')->unsigned();
             $table->dateTime('in_time');
+            $table->tinyInteger('type')->default(1);
             $table->timestamps();
         });
 

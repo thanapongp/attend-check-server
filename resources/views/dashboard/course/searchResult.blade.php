@@ -126,25 +126,7 @@
 				<div class="col-sm-3 form-legend">
 					<legend class="text-right">Option รายวิชา</legend>
 				</div>
-			</div>
-			
-			<div class="form-group">
-				<label for="start_date" class="col-sm-3 control-label">รูปแบบการสุ่มรายชื่อ</label>
-				<div class="col-sm-4">
-					<div class="radio">
-						<label>
-							<input type="radio" name="random_method" value="1" checked>
-							สุ่มเฉพาะคนที่โดนสุ่มน้อยที่สุด
-						</label>
-					</div>
-					<div class="radio">
-						<label>
-							<input type="radio" name="random_method" value="2">
-							สุ่มแบบปกติ
-						</label>
-					</div>
-				</div>
-			</div>
+			</div> 
 
 			<div class="form-group">
 				<label for="late_time" class="col-sm-3 control-label">เวลาที่เข้าสายได้ (นาที)</label>
