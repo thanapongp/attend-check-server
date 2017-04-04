@@ -21,12 +21,35 @@
 
 	<div class="panel-heading">
 		<span>คาบ {{(new \Jenssegers\Date\Date($schedule->start_date))->format('j F Y H:i')}} ห้อง {{$schedule->room}}</span>
+		<span class="pull-right schedule-option dropdown">
+			<a id="courseOption" href="#" data-toggle="dropdown">
+				<i class="fa fa-cog"></i>
+			</a>
+
+			<ul class="dropdown-menu" aria-labelledby="courseOption">
+				<li>
+					<a href="#" onclick="getFirstToken(event,{{$schedule->id}})">
+						แสดง Token สำหรับเช็คชื่อครั้งแรก
+					</a>
+				</li>
+			</ul>
+		</span>
 	</div>
 
 	<div class="panel-body">
-		<div style="float: right; margin-bottom: 1em;">
-			<input class="form-control" type="text" placeholder="ค้นหา" 
-			onkeyup="search(this.value)" style="width: 250px">
+		<div class="row" style="margin-bottom: 1em;">
+			<div class="col-sm-6">
+				<button class="btn btn-raised-info">
+					<i class="fa fa-check"></i> Check-in
+				</button>
+				<button class="btn btn-raised-info">
+					<i class="fa fa-random"></i> สุ่มตอบคำถาม
+				</button>
+			</div>
+			<div class="col-sm-6">
+				<input class="form-control" type="text" placeholder="ค้นหา" 
+				onkeyup="search(this.value)" style="width: 250px; float: right;">
+			</div>
 		</div>
 		<table class="table table-hover" id="studentstable">
 			<thead>
@@ -61,6 +84,26 @@
 
 @section('js')
 <script type="text/javascript">
+var firstToken = '';
+
+function getFirstToken(e, scheduleID) {
+	if (firstToken == '') {
+		axios.post('/dashboard/enable-firstcheck', {
+			scheduleID: scheduleID
+		})
+		.then(function (response) {
+			firstToken = response.data;
+			swal(firstToken, 'Token สำหรับเช็คชื่อครั้งแรก');
+		})
+		.catch(function (error) {
+			console.log(error);
+		});
+	} else {
+		swal(firstToken, 'Token สำหรับเช็คชื่อครั้งแรก');
+	}
+}
+
+
 function manualCheck(e, studentID, scheduleID) {
 	e.preventDefault();
 

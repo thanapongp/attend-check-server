@@ -19,6 +19,7 @@ class CreateSchedulesTable extends Migration
             $table->string('room');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
+            $table->string('checkin_code')->nullable();
             $table->timestamps();
         });
 
