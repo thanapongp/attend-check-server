@@ -68,8 +68,9 @@
 					<td data-stuid="{{$student->id}}">{{$student->attendStatus($schedule)}}</td>
 					<td>
 						<a href="#" onclick="manualCheck(event, {{$student->id}}, {{$schedule->id}})">
-							<span class="text-{{$student->isAttended($schedule) ? 'success' : 'danger'}}">
-								<i class="check-button fa fa-2x{{$student->isAttended($schedule) ? ' fa-check' : ' fa-times'}}" 
+							<span class="text-{{getTextClass($student->isAttended($schedule))}}">
+								<i class="check-button fa fa-2x 
+								{{getIconClass($student->isAttended($schedule))}}" 
 								data-stuid="{{$student->id}}"></i>
 							</span>
 						</a>
@@ -124,16 +125,19 @@ function manualCheck(e, studentID, scheduleID) {
 function changeStatusText(response, studentID) {
 	if (response.data.includes("check") && response.data != "uncheck") {
 		var innertext = 'เข้าเรียน';
+		var textClass = 'text-success';
 		toastr.success('เช็คชื่อสำเร็จ!');
 	}
 
 	if (response.data.includes("late")) {
 		var innertext = 'สาย';
+		var textClass = 'text-warning';
 		toastr.success('เช็คชื่อสำเร็จ!');
 	}
 
 	if (response.data == "uncheck") {
 		var innertext = 'ยังไม่เข้าเรียน';
+		var textClass = 'text-info';
 		toastr.warning('ยกเลิกการเช็คชื่อสำเร็จ!');
 	}
 
@@ -141,7 +145,8 @@ function changeStatusText(response, studentID) {
 
 	$("i[data-stuid="+studentID+"]").toggleClass("fa-check fa-times")
 	.parent()
-	.toggleClass("text-success text-danger");
+	.removeClass("text-success text-danger text-info")
+	.addClass(textClass);
 }
 
 function search(value) {

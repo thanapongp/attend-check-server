@@ -61,7 +61,7 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(
             'AttendCheck\Course\Schedule', 'attendances', 'student_id', 'schedule_id'
-        )->withPivot('in_time')->using('AttendCheck\Course\Attendance');
+        )->withPivot('in_time', 'type')->using('AttendCheck\Course\Attendance');
     }
 
     public function device()
@@ -84,26 +84,49 @@ class User extends Authenticatable
 
     public function isAttended($schedule)
     {
-        return $this->attendances->contains(function ($attendance) use ($schedule)  {
+        $attended = $this->attendances->contains(function ($attendance) use ($schedule)  {
             return $attendance->pivot->schedule_id == $schedule->id;
         });
+
+        if (! $attended) {
+            return false;
+        }
+
+        return $this->attendances()
+                    ->where('schedule_id', $schedule->id)
+                    ->first()
+                    ->pivot->type;
     }
 
     public function attend($schedule)
     {
-        if ($this->isAttended($schedule)) {
-            $this->attendances()->detach($schedule->id);
-            return 'uncheck';
-        }
-
         $now = \Carbon\Carbon::now();
         $starttime = $schedule->start_date;
         $latetime = $schedule->course->latetime;
 
-        $isLate = ($now->diffInMinutes($starttime->addMinute($latetime))) > $latetime;
+        $isLate = $now < $starttime ? false : 
+        ($now->diffInMinutes($starttime->addMinute($latetime))) > $latetime;
+
+        if ($type = $this->isAttended($schedule)) {
+            $attendance = $this->attendances()->where('schedule_id', $schedule->id)->first();
+
+            if ($type == 1 || $type == 2) {
+                $attendance->pivot->type = 3;
+                $attendance->pivot->save();
+
+                return 'uncheck';
+            } else {
+                $attendance->pivot->type = $isLate ? 2 : 1;
+                $attendance->pivot->save();
+
+                return $isLate ? 'late': 'check';
+            }
+        }
+
         $in_time = $now->toDateTimeString();
 
         $this->attendances()->attach($schedule->id, [
+            'type' => $isLate ? 2 : 1,
             'in_time' => $in_time
         ]);
 

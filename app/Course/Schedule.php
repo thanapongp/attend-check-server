@@ -45,6 +45,11 @@ class Schedule extends Model
         )->withPivot('in_time')->using('AttendCheck\Course\Attendance');
     }
 
+    public function checkIns()
+    {
+        return $this->hasMany('AttendCheck\Course\CheckIn');
+    }
+
     /**
      * Scope a query to order schedule to make 
      * passed date comes after upcoming date.

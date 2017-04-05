@@ -12,7 +12,7 @@ class ScheduleController extends Controller
         $schedule = Schedule::find($request->scheduleID);
 
         if (! $schedule->checkin_code) {
-            $schedule->checkin_code = bin2hex(openssl_random_pseudo_bytes(ceil(5 / 2)));
+            $schedule->checkin_code = bin2hex(openssl_random_pseudo_bytes(ceil(2)));
             $schedule->save();
         }
 

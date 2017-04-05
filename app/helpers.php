@@ -119,3 +119,28 @@ if (! function_exists('current_user')) {
         return \Illuminate\Support\Facades\Auth::user();
     }
 }
+
+function getTextClass($type) 
+{
+
+    switch ($type) {
+        case false:
+            return 'danger';
+        
+        case 1:
+            return 'success';
+        case 2:
+            return 'warning';
+        case 3:
+            return 'info'; 
+    }
+}
+
+function getIconClass($type)
+{
+    if ($type == 1 || $type == 2) {
+        return 'fa-check';
+    }
+
+    return 'fa-times';
+}
