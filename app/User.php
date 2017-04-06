@@ -137,20 +137,18 @@ class User extends Authenticatable
 
     public function attendStatus($schedule)
     {
-        if (! $this->isAttended($schedule)) {
-            return 'ยังไม่เข้าเรียน';
+        switch ($this->isAttended($schedule))
+        {
+            case false:
+                return 'ยังไม่เข้าเรียน';
+            
+            case 1:
+                return 'เข้าเรียน';
+            case 2:
+                return 'สาย';
+            case 3:
+                return 'ยังไม่เข้าเรียน'; 
         }
-
-        $schedule = $this->attendances->where('id', $schedule->id)->first();
-
-        $starttime = $schedule->start_date;
-        $latetime = $schedule->course->latetime;
-
-        $inTime = $schedule->pivot->in_time;
-
-        $isLate = ($inTime->diffInMinutes($starttime->addMinute($latetime))) > $latetime;
-
-        return $isLate ? 'สาย' : 'เข้าเรียน';
     }
 
     public function enroll($course)
