@@ -15,6 +15,4 @@ use Illuminate\Http\Request;
 
 Route::post('/register', 'Api\DevicesController@register');
 
-Route::middleware('auth:mobileapp')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('auth:mobileapp')->get('/user', 'Api\DevicesController@getUserData');
