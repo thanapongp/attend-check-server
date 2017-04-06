@@ -40,9 +40,6 @@
 		<div class="row" style="margin-bottom: 1em;">
 			<div class="col-sm-6">
 				<button class="btn btn-raised-info">
-					<i class="fa fa-check"></i> Check-in
-				</button>
-				<button class="btn btn-raised-info">
 					<i class="fa fa-random"></i> สุ่มตอบคำถาม
 				</button>
 			</div>
