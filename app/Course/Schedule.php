@@ -42,7 +42,7 @@ class Schedule extends Model
     {
         return $this->belongsToMany(
             'AttendCheck\User', 'attendances', 'schedule_id', 'student_id'
-        )->withPivot('in_time')->using('AttendCheck\Course\Attendance');
+        )->withPivot('type', 'in_time')->using('AttendCheck\Course\Attendance');
     }
 
     public function checkIns()

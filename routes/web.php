@@ -2,7 +2,7 @@
 
 Route::get('/', function () { return redirect('/login'); });
 Route::get('/test', function () {
-    return \AttendCheck\User::find(140)->enrollments()->toSql();
+    return \AttendCheck\Course\schedule::with('attendances')->get()->find(3)->attendances;
 });
 
 Auth::routes();
@@ -23,6 +23,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     
     Route::post('/manual-check', 'AttendanceController@attendClass');
     Route::post('/enable-firstcheck', 'ScheduleController@generateFirstCheckCode');
+
+    Route::get('/random-student', 'ScheduleController@getRandomStudent');
 
     // User
     Route::get('/user/{user}', 'UserController@show');

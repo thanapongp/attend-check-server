@@ -39,7 +39,9 @@
 	<div class="panel-body">
 		<div class="row" style="margin-bottom: 1em;">
 			<div class="col-sm-6">
-				<button class="btn btn-raised-info">
+				<button class="btn btn-raised-info" 
+				data-toggle="modal" 
+				data-target="#randomModal">
 					<i class="fa fa-random"></i> สุ่มตอบคำถาม
 				</button>
 			</div>
@@ -76,6 +78,43 @@
 				@endforeach
 			</tbody>
 		</table>
+	</div>
+</div>
+
+
+<div id="randomModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">
+					สุ่มตอบคำถาม
+				</h4>
+			</div>
+
+			<div class="modal-body">
+				<h1 id="nameDisplay" class="text-center">
+					--
+				</h1>
+
+				<div>
+					<div class="checkbox text-center">
+						<label>
+							<input type="checkbox" id="chooseMinOnly"> เลือกเฉพาะคนที่ไม่เคยโดนสุ่ม / โดนสุ่มน้อย
+						</label>
+					</div>
+
+					<div class="text-center">
+						<button class="btn btn-info" 
+						onclick="randomStudent({{$schedule->id}})">
+							<i class="fa fa-random"></i> สุ่ม
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 @endsection
@@ -153,6 +192,21 @@ function search(value) {
 		} else {
 			$(this).parent().hide();
 		}
+	});
+}
+
+function randomStudent(id) {
+	var randomEndPoint = "/dashboard/random-student?schedule=" + id;
+
+	if ($('#chooseMinOnly').is(':checked')) {
+		randomEndPoint = randomEndPoint + '&getLowest=true';
+	}
+
+	console.log('randomEndPoint: ' + randomEndPoint);
+
+	axios.get(randomEndPoint)
+	.then(function (response) {
+		$('#nameDisplay').html(response.data);
 	});
 }
 </script>

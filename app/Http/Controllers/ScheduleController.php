@@ -18,4 +18,30 @@ class ScheduleController extends Controller
 
         return $schedule->fresh()->checkin_code;
     }
+
+    public function getRandomStudent(Request $request)
+    {
+        $attendees = Schedule::with('attendances')
+                    ->get()
+                    ->find($request->schedule)
+                    ->attendances
+                    ->filter(function ($item) {
+                        return $item->pivot->type != 3;
+                    });
+
+        if ($request->has('getLowest')) {
+            $lowestCount = $attendees->min('pickcount');
+
+            $attendees = $attendees->filter(function ($item) use ($lowestCount) {
+                return $item->pickcount <= $lowestCount;
+            });
+        }
+
+        $candidate = $attendees->random();
+
+        $candidate->pickcount = ++$candidate->pickcount;
+        $candidate->save();
+
+        return $candidate->name . ' ' . $candidate->lastname;
+    }
 }
