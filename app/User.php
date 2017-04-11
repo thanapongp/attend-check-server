@@ -3,6 +3,7 @@
 namespace AttendCheck;
 
 use Illuminate\Notifications\Notifiable;
+use AttendCheck\Services\AttendanceCheckService;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -100,39 +101,7 @@ class User extends Authenticatable
 
     public function attend($schedule)
     {
-        $now = \Carbon\Carbon::now();
-        $starttime = $schedule->start_date;
-        $latetime = $schedule->course->latetime;
-
-        $isLate = $now < $starttime ? false : 
-        ($now->diffInMinutes($starttime->addMinute($latetime))) > $latetime;
-
-        if ($type = $this->isAttended($schedule)) {
-            $attendance = $this->attendances()->where('schedule_id', $schedule->id)->first();
-
-            if ($type == 1 || $type == 2) {
-                $attendance->pivot->type = 3;
-                $attendance->pivot->save();
-
-                return 'uncheck';
-            } else {
-                $attendance->pivot->type = $isLate ? 2 : 1;
-                $attendance->pivot->save();
-
-                return $isLate ? 'late': 'check';
-            }
-        }
-
-        $in_time = $now->toDateTimeString();
-
-        $this->attendances()->attach($schedule->id, [
-            'type' => $isLate ? 2 : 1,
-            'in_time' => $in_time
-        ]);
-
-        $lastInsertID = \DB::getPdo()->lastInsertId();
-
-        return $isLate ? 'late'.$lastInsertID : 'check'.$lastInsertID;
+        return (new AttendanceCheckService($this))->check($schedule);
     }
 
     public function attendStatus($schedule)
