@@ -37,6 +37,11 @@ class DevicesController extends Controller
         $this->userRepository = $userRepository; 
     }
 
+    public function getUserData(Request $request)
+    {
+        return $this->userRepository->getUserDataForMobileApp($request->user())->toArray();
+    }
+
     /**
      * Register new device.
      * 

@@ -19,6 +19,7 @@ class CreateSchedulesTable extends Migration
             $table->string('room');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
+            $table->boolean('has_checkout')->default(false);
             $table->timestamps();
         });
 

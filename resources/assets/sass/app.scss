@@ -16,6 +16,12 @@
 // Datatables
 @import "node_modules/datatables.net-bs/css/dataTables.bootstrap";
 
+// Toastr
+@import "node_modules/toastr/toastr";
+
+// SweetAlert
+@import "node_modules/sweetalert/dev/sweetalert";
+
 html, body {
     min-height: 100%;
 }

@@ -3,6 +3,7 @@
 namespace AttendCheck;
 
 use Illuminate\Notifications\Notifiable;
+use AttendCheck\Services\AttendanceCheckService;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -61,7 +62,7 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(
             'AttendCheck\Course\Schedule', 'attendances', 'student_id', 'schedule_id'
-        )->withPivot('late', 'in_time')->using('AttendCheck\Course\Attendance');
+        )->withPivot('in_time', 'type')->using('AttendCheck\Course\Attendance');
     }
 
     public function device()
@@ -84,38 +85,41 @@ class User extends Authenticatable
 
     public function isAttended($schedule)
     {
-        return $this->attendances->contains(function ($attendance) use ($schedule)  {
+        $attended = $this->attendances->contains(function ($attendance) use ($schedule)  {
             return $attendance->pivot->schedule_id == $schedule->id;
         });
-    }
 
-    public function attend($schedule)
-    {
-        if ($this->isAttended($schedule)) {
-            return $this->attendances()->detach($schedule->id);
+        if (! $attended) {
+            return false;
         }
 
-        $now = \Carbon\Carbon::now();
-        $starttime = $schedule->start_date;
-        $latetime = $schedule->course->latetime;
+        return $this->attendances()
+                    ->where('schedule_id', $schedule->id)
+                    ->first()
+                    ->pivot->type;
+    }
 
-        $isLate = ($now->diffInMinutes($starttime->addMinute($latetime))) > $latetime;
-        $in_time = $now->toDateTimeString();
-
-        $this->attendances()->attach($schedule->id, [
-            'late' => $isLate,
-            'in_time' => $in_time
-        ]);
+    public function attend($schedule, $type = null)
+    {
+        return (new AttendanceCheckService($this))->check($schedule, $type);
     }
 
     public function attendStatus($schedule)
     {
-        if (! $this->isAttended($schedule)) {
-            return 'ยังไม่เข้าเรียน';
+        switch ($this->isAttended($schedule))
+        {
+            case false:
+                return 'ยังไม่เข้าเรียน';
+            
+            case 1:
+                return 'เข้าเรียน';
+            case 2:
+                return 'สาย';
+            case 3:
+                return 'ยังไม่เข้าเรียน';
+            case 4:
+                return 'ลา';
         }
-
-        return $this->attendances->where('id', $schedule->id)->first()->pivot->late 
-                ? 'สาย' : 'เข้าเรียน';
     }
 
     public function enroll($course)
