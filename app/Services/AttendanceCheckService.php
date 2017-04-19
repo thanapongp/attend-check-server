@@ -32,8 +32,12 @@ class AttendanceCheckService
      * @param  \AttendCheck\Course\Schedule $schedule
      * @return String
      */
-    public function check(Schedule $schedule)
+    public function check(Schedule $schedule, $type)
     {
+        if (! is_null($type)) {
+            return $this->forceChangeAttendanceType($type, $schedule);
+        }
+
         $isLate = $this->checkIfLate($schedule);
 
         if ($type = $this->user->isAttended($schedule)) {
@@ -90,6 +94,31 @@ class AttendanceCheckService
         }
     }
 
+    private function forceChangeAttendanceType($type, $schedule)
+    {
+        if (! $this->user->isAttended($schedule)) {
+
+            $in_time = Carbon::now()->toDateTimeString();
+
+            $this->user->attendances()->attach($schedule->id, [
+                'type' => $type,
+                'in_time' => $in_time
+            ]);
+
+        } else {
+
+            $attendance = $this->user->attendances()
+                                 ->where('schedule_id', $schedule->id)
+                                 ->first();
+
+            $attendance->pivot->type = $type;
+            $attendance->pivot->save();
+
+        }
+
+        return $this->getTypeString($type);
+    }
+
     /**
      * Actually perform check.
      * 
@@ -107,5 +136,19 @@ class AttendanceCheckService
         ]);
 
         return DB::getPdo()->lastInsertId();
+    }
+
+    private function getTypeString($type)
+    {
+        switch ($type) {
+            case 1:
+                return 'check';
+            case 2:
+                return 'late';
+            case 3:
+                return 'uncheck';
+            case 4:
+                return 'off';
+        }
     }
 }

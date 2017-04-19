@@ -133,6 +133,8 @@ function getTextClass($type)
             return 'warning';
         case 3:
             return 'info'; 
+        case 4:
+            return 'info'; 
     }
 }
 

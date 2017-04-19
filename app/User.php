@@ -99,9 +99,9 @@ class User extends Authenticatable
                     ->pivot->type;
     }
 
-    public function attend($schedule)
+    public function attend($schedule, $type = null)
     {
-        return (new AttendanceCheckService($this))->check($schedule);
+        return (new AttendanceCheckService($this))->check($schedule, $type);
     }
 
     public function attendStatus($schedule)
@@ -116,7 +116,9 @@ class User extends Authenticatable
             case 2:
                 return 'สาย';
             case 3:
-                return 'ยังไม่เข้าเรียน'; 
+                return 'ยังไม่เข้าเรียน';
+            case 4:
+                return 'ลา';
         }
     }
 

@@ -66,11 +66,38 @@
 					</td>
 					<td data-stuid="{{$student->id}}">{{$student->attendStatus($schedule)}}</td>
 					<td>
-						<a href="#" onclick="manualCheck(event, {{$student->id}}, {{$schedule->id}})">
+						<a href="#" onclick="manualCheck(event, {{$student->id}}, {{$schedule->id}})" class="manualCheck">
 							<span class="text-{{getTextClass($student->isAttended($schedule))}}">
 								<i class="check-button fa fa-2x 
 								{{getIconClass($student->isAttended($schedule))}}" 
 								data-stuid="{{$student->id}}"></i>
+
+								<div class="dropdown" style="display: inline-block;">
+									<a id="checkOption{{$student->id}}" href="#"
+										data-toggle="dropdown">
+										<i class="fa fa-caret-down"></i>
+									</a>
+
+									<ul class="dropdown-menu" 
+									aria-labelledby="checkOption{{$student->id}}">
+										<li>
+											<a href="#" 
+											onclick="manualCheckWithType(event, {{$student->id}}, {{$schedule->id}}, 2)">
+												สาย
+											</a>
+										</li>
+										<li>
+											<a href="#" onclick="manualCheckWithType(event, {{$student->id}}, {{$schedule->id}}, 4)">
+												ลา
+											</a>
+										</li>
+										<li>
+											<a href="#" onclick="manualCheckWithType(event, {{$student->id}}, {{$schedule->id}}, 3)">
+												ยกเลิกเช็คชื่อ
+											</a>
+										</li>
+									</ul>
+								</div>
 							</span>
 						</a>
 					</td>
@@ -120,6 +147,11 @@
 @endsection
 
 @section('js')
+<style>
+	.manualCheck:hover, .manualCheck:active {
+		text-decoration: none;
+	}
+</style>
 <script type="text/javascript">
 var firstToken = '';
 
@@ -158,6 +190,22 @@ function manualCheck(e, studentID, scheduleID) {
 	});
 }
 
+function manualCheckWithType(e, studentID, scheduleID, type) {
+	e.preventDefault();
+
+	axios.post('/dashboard/manual-check', {
+		userID: studentID,
+		scheduleID: scheduleID,
+		type: type
+	})
+	.then(function (response) {
+		changeStatusText(response, studentID);
+	})
+	.catch(function (error) {
+		console.log(error);
+	});
+}
+
 function changeStatusText(response, studentID) {
 	if (response.data.includes("check") && response.data != "uncheck") {
 		var innertext = 'เข้าเรียน';
@@ -171,10 +219,31 @@ function changeStatusText(response, studentID) {
 		toastr.success('เช็คชื่อสำเร็จ!');
 	}
 
+	if (response.data.includes("off")) {
+		var innertext = 'ลา';
+		var textClass = 'text-info';
+		toastr.success('เช็คลาสำเร็จ!');
+
+		$("td[data-stuid="+studentID+"]").html(innertext);
+		$("i[data-stuid="+studentID+"]").removeClass("fa-check fa-times")
+		.addClass("fa-times")
+		.parent()
+		.removeClass("text-success text-danger text-info")
+		.addClass(textClass);
+		return;
+	}
+
 	if (response.data == "uncheck") {
 		var innertext = 'ยังไม่เข้าเรียน';
 		var textClass = 'text-info';
 		toastr.warning('ยกเลิกการเช็คชื่อสำเร็จ!');
+		$("td[data-stuid="+studentID+"]").html(innertext);
+		$("i[data-stuid="+studentID+"]").removeClass("fa-check fa-times")
+		.addClass("fa-times")
+		.parent()
+		.removeClass("text-success text-danger text-info")
+		.addClass(textClass);
+		return;
 	}
 
 	$("td[data-stuid="+studentID+"]").html(innertext);

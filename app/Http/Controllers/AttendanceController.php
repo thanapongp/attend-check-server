@@ -15,6 +15,10 @@ class AttendanceController extends Controller
         $user = User::find($request->userID);
         $schedule = Schedule::find($request->scheduleID);
 
+        if ($request->has('type')) {
+            return $user->attend($schedule, $request->type);
+        }
+
         return $user->attend($schedule);
     }
 }
