@@ -53,6 +53,12 @@
         <a href="/password/reset" class="inside-panel-link">ลืมรหัสผ่าน</a>
     </form>
     <a href="/register" class="outside-panel-link">ลงทะเบียนเข้าใช้ระบบ</a>
+    <a href="/mobile/app-debug.apk" class="outside-panel-link">
+        <img src="/img/Android_App_Download.png" alt="Download for android" width="200">
+    </a>
+    <p class="outside-panel-link">
+        รองรับ Android 4.4 ขึ้นไป
+    </p>
     
     <script src="{{ mix('js/app.js') }}"></script>
 </body>
