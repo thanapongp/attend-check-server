@@ -77,14 +77,14 @@ class ScheduleRepository
                 $schedule = new Schedule;
 
                 $date = ($period->day == self::MONDAY) ? 
-                $weekStart->toDateString() : $weekStart->next($period->day);
+                $weekStart->toDateString() : ($weekStart->next($period->day))->toDateString();
 
                 $schedule->start_date = Carbon::parse(
-                    $date->toDateString() . ' ' . $period->start_time
+                    $date . ' ' . $period->start_time
                 );
 
                 $schedule->end_date = Carbon::parse(
-                    $date->toDateString() . ' ' . $period->end_time
+                    $date . ' ' . $period->end_time
                 );
 
                 $schedule->room = $period->room;
