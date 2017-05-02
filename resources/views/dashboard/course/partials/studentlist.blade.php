@@ -7,14 +7,13 @@
 <table class="table table-hover" id="studentstable">
 	<thead>
 		<th>ชื่อ</th>
-		<th>เข้าเรียน</th>
-		<th>สาย</th>
-		<th>ขาด</th>
+		<th>เข้าเรียน (ครั้ง)</th>
+		<th>สาย (ครั้ง)</th>
+		<th>ขาด (ครั้ง)</th>
 		<th>% การขาด</th>
 		<th>ดูข้อมูล</th>
 	</thead>
 	<tbody>
-		@inject('record', '\AttendCheck\Services\AttendanceRecordService')
 		@foreach($course->students as $student)
 		<tr class="clickable-row" 
 		data-href="{{ url('/dashboard/student/'. $student->username) }}">

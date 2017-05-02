@@ -43,6 +43,7 @@
 		{{-- tabs list --}}
 
 		{{-- tabs content --}}
+		@inject('record', '\AttendCheck\Services\AttendanceRecordService')
 		<div class="tab-content dashboard-tab">
 			<div class="tab-pane fade in active" id="schedule">
 				@include('dashboard.course.partials.schedulelist')
