@@ -66,4 +66,9 @@ class Schedule extends Model
                 END) DESC, end_date ASC
             ");
     }
+
+    public function scopeAlreadyStarted($query)
+    {
+        return $query->where('end_date', '>', 'NOW()');
+    }
 }

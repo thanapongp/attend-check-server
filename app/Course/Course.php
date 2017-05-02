@@ -13,6 +13,13 @@ class Course extends Model
      */
     protected $guarded = ['id'];
 
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['schedules'];
+
     public function semester()
     {
         switch ($this->semester) {

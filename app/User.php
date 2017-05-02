@@ -27,6 +27,13 @@ class User extends Authenticatable
     ];
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['attendances'];
+
+    /**
      * Get the user's type
      * 
      * @return \AttendCheck\UserType
@@ -83,6 +90,11 @@ class User extends Authenticatable
         }
     }
 
+    public function enroll($course)
+    {
+        $this->enrollments()->attach($course->id);
+    }
+
     public function isAttended($schedule)
     {
         $attended = $this->attendances->contains(function ($attendance) use ($schedule)  {
@@ -110,7 +122,6 @@ class User extends Authenticatable
         {
             case false:
                 return 'ยังไม่เข้าเรียน';
-            
             case 1:
                 return 'เข้าเรียน';
             case 2:
@@ -120,10 +131,5 @@ class User extends Authenticatable
             case 4:
                 return 'ลา';
         }
-    }
-
-    public function enroll($course)
-    {
-        $this->enrollments()->attach($course->id);
     }
 }
