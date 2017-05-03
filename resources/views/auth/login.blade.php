@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AttendCheck | Login</title>
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 </head>
@@ -10,7 +12,8 @@
         <i class="fa fa-check-square-o"></i> AttendCheck
     </div>
 
-    <form action="/login" method="POST" class="panel panel-default auth-panel">
+    <form action="/login" method="POST" class="panel panel-default auth-panel hidden-xs
+    hidden-sm">
         {{ csrf_field() }}
         <legend class="form-header">เข้าสู่ระบบ</legend>
         
@@ -52,12 +55,12 @@
         </button>
         <a href="/password/reset" class="inside-panel-link">ลืมรหัสผ่าน</a>
     </form>
-    <a href="/register" class="outside-panel-link">ลงทะเบียนเข้าใช้ระบบ</a>
-    <a href="/mobile/app-debug.apk" class="outside-panel-link">
+    <a href="/register" class="outside-panel-link hidden-xs hidden-sm">ลงทะเบียนเข้าใช้ระบบ</a>
+    <a href="/mobile/app-debug.apk" class="outside-panel-link hidden-md hidden-lg">
         <img src="/img/Android_App_Download.png" alt="Download for android" width="200">
     </a>
-    <p class="outside-panel-link">
-        รองรับ Android 4.4 ขึ้นไป
+    <p class="outside-panel-link hidden-md hidden-lg">
+        รองรับ Android 4.1 ขึ้นไป
     </p>
     
     <script src="{{ mix('js/app.js') }}"></script>
