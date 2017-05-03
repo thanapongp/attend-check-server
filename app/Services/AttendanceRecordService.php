@@ -64,7 +64,7 @@ class AttendanceRecordService
     {
         $schedulesCount = $course->schedules()->alreadyStarted()->get()->count();
         $missingCount = $this->missingCount($course, $user);
-
+        
         return $schedulesCount == 0 ? 0 : ($missingCount / $schedulesCount) * 100;
     }
 

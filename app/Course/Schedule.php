@@ -69,6 +69,6 @@ class Schedule extends Model
 
     public function scopeAlreadyStarted($query)
     {
-        return $query->where('end_date', '>', 'NOW()');
+        return $query->whereRaw('end_date < NOW()');
     }
 }
