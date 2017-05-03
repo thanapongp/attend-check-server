@@ -56,7 +56,7 @@ class DevicesController extends Controller
         // with error request that returns from the method.
         $response = $this->checkUserAvailbility($request);
         
-        if ($response instanceof \Illuminate\Http\Response) {
+        if (! $response instanceof User) {
             return $response;
         }
 
@@ -103,14 +103,14 @@ class DevicesController extends Controller
      */
     private function checkUserAvailbility(Request $request)
     {
-        if (User::where('email', $request->email)->exists()) {
-            return response()
-                    ->json(['error' => 'Email already exists'], self::HTTP_CONFLICT);
-        }
-
         if (! $user = User::where('username', $request->username)->first()) {
             return response()
                     ->json(['error' => 'User not exists'], self::HTTP_NOTFOUND);
+        }
+
+        if ($user->email == $request->email) {
+            return response()
+                    ->json(['error' => 'Email already exists'], self::HTTP_CONFLICT);
         }
 
         if ($user->password != null) {
