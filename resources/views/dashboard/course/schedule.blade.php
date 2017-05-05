@@ -41,7 +41,7 @@
 			<div class="col-sm-6">
 				<button class="btn btn-raised-info" 
 				data-toggle="modal" 
-				data-target="#randomModal">
+				data-target="#randomModal" onclick="clearCandidate()">
 					<i class="fa fa-random"></i> สุ่มตอบคำถาม
 				</button>
 			</div>
@@ -138,6 +138,10 @@
 						onclick="randomStudent({{$schedule->id}})">
 							<i class="fa fa-random"></i> สุ่ม
 						</button>
+						<button class="btn btn-info" 
+						onclick="addPointToStudent()">
+							+1
+						</button>
 					</div>
 				</div>
 			</div>
@@ -154,6 +158,7 @@
 </style>
 <script type="text/javascript">
 var firstToken = '';
+var currentCandidate = 0;
 
 function getFirstToken(e, scheduleID) {
 	e.preventDefault();
@@ -275,7 +280,23 @@ function randomStudent(id) {
 
 	axios.get(randomEndPoint)
 	.then(function (response) {
-		$('#nameDisplay').html(response.data);
+		$('#nameDisplay').html(response.data.name);
+		currentCandidate = response.data.id;
+	});
+}
+
+function clearCandidate() {
+	$('#nameDisplay').html('--');
+	currentCandidate = 0;
+}
+
+function addPointToStudent() {
+	if (currentCandidate == 0) { return; }
+	axios.post('/dashboard/add-point-student', {
+		id: currentCandidate
+	})
+	.then(function (request) {
+		toastr.success('+1 ให้ ' + $('#nameDisplay').html());
 	});
 }
 </script>

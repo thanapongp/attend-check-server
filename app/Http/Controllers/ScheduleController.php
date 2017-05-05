@@ -2,6 +2,7 @@
 
 namespace AttendCheck\Http\Controllers;
 
+use AttendCheck\User;
 use Illuminate\Http\Request;
 use AttendCheck\Course\Schedule;
 
@@ -39,9 +40,19 @@ class ScheduleController extends Controller
 
         $candidate = $attendees->random();
 
+        return [
+            'id' => $candidate->id,
+            'name' => $candidate->name . ' ' . $candidate->lastname
+        ];
+    }
+
+    public function addPointToCandidate(Request $request)
+    {
+        $candidate = User::findOrFail($request->id);
+
         $candidate->pickcount = ++$candidate->pickcount;
         $candidate->save();
 
-        return $candidate->name . ' ' . $candidate->lastname;
+        return 'OK';
     }
 }

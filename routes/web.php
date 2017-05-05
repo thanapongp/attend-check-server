@@ -25,6 +25,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     Route::post('/enable-firstcheck', 'ScheduleController@generateFirstCheckCode');
 
     Route::get('/random-student', 'ScheduleController@getRandomStudent');
+    Route::post('/add-point-student', 'ScheduleController@addPointToCandidate');
 
     // User
     Route::get('/user/{user}', 'UserController@show');
