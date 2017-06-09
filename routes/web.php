@@ -2,7 +2,12 @@
 
 Route::get('/', function () { return redirect('/login'); });
 Route::get('/test', function () {
-    return \AttendCheck\Course\schedule::with('attendances')->get()->find(3)->attendances;
+    $record = resolve(\AttendCheck\Services\AttendanceRecordService::class);
+
+    $course = \AttendCheck\Course\Course::find(1);
+    $student = \AttendCheck\User::find(3);
+
+    return $record->getExcelFormat($course, $student);
 });
 
 Auth::routes();

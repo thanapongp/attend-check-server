@@ -69,6 +69,28 @@ class AttendanceRecordService
     }
 
     /**
+     * Get attendance record data for using in excel document.
+     * 
+     * @param  \AttendCheck\Course\Course $course
+     * @param  \AttendCheck\User $user 
+     * @return \Illuminate\Support\Collection Collection contains 'yes' or 'no' or 'late'.
+     */
+    public function getExcelFormat($course, $user)
+    {
+        return $course->schedules->map(function ($schedule) use ($user)  {
+            if (! $user->attendances->contains('pivot.schedule_id', $schedule->id)) {
+                return 'no';
+            }
+
+            $schedule = $user->attendances
+                             ->where('pivot.schedule_id', $schedule->id)
+                             ->first();
+
+            return $schedule->pivot->type == '2' ? 'late' : 'yes';
+        });
+    }
+
+    /**
      * Get attendance count of specified schedule.
      * 
      * @param  \AttendCheck\Course\Schedule $course
