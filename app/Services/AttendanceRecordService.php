@@ -87,7 +87,15 @@ class AttendanceRecordService
                              ->first();
 
             return $schedule->pivot->type == '2' ? 'late' : 'yes';
-        });
+        })->merge([
+            $this->attendanceCount($course, $user),
+            $this->lateCount($course, $user),
+            $this->missingCount($course, $user),
+            $this->missingPercentage($course, $user),
+        ])->prepend([
+            $user->username,
+            $user->fullname(),
+        ])->flatten();
     }
 
     /**
