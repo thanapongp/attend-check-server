@@ -7,16 +7,21 @@ use Illuminate\Http\Request;
 use AttendCheck\Api\Requestor;
 use AttendCheck\Course\Course;
 use AttendCheck\Repositories\CourseRepository as Repository;
+use AttendCheck\Services\CourseExportService as Exporter;
 
 class CourseController extends Controller
 {
     protected $requestor;
     protected $repository;
 
-    public function __construct(Requestor $requestor, Repository $repository)
+    public function __construct(
+        Requestor $requestor, 
+        Repository $repository,
+        Exporter $exporter)
     {
         $this->requestor = $requestor;
         $this->repository = $repository;
+        $this->exporter = $exporter;
     }
 
     /**
@@ -118,6 +123,11 @@ class CourseController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    public function export(Course $course)
+    {
+        return response()->download($this->exporter->export($course));
     }
 
     /**

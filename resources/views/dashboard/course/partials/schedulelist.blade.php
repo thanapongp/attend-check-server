@@ -1,5 +1,5 @@
 <div>
-	<button class="btn btn-raised-primary pull-right">
+	<button class="btn btn-raised-primary pull-right export-btn" type="button">
 		<i class="fa fa-download"></i> Export ทั้งหมด
 	</button>
 	<div class="clearfix"></div>

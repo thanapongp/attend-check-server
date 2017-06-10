@@ -1,9 +1,9 @@
-{{-- <div>
-	<button class="btn btn-raised-primary pull-right">
+<div>
+	<button class="btn btn-raised-primary pull-right export-btn" type="button">
 		<i class="fa fa-download"></i> Export ทั้งหมด
 	</button>
 	<div class="clearfix"></div>
-</div> --}}
+</div>
 <table class="table table-hover" id="studentstable">
 	<thead>
 		<th>ชื่อ</th>

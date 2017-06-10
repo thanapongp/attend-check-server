@@ -91,7 +91,7 @@ class AttendanceRecordService
             $this->attendanceCount($course, $user),
             $this->lateCount($course, $user),
             $this->missingCount($course, $user),
-            $this->missingPercentage($course, $user),
+            $this->missingPercentage($course, $user) . ' %',
         ])->prepend([
             $user->username,
             $user->fullname(),

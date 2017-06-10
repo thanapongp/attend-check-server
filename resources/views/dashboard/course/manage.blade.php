@@ -58,17 +58,24 @@
 		{{-- tabs content --}}
 	</div>
 </div>
+
+<form id="exportForm" action="/dashboard/course/{{$course->url()}}/export" 
+	method="POST" style="display: none;">
+	{{csrf_field()}}
+</form>
 @endsection
 
 @section('js')
 <script src="/js/clickablerow.js"></script>
 <script>
-$(document).ready(function(){
+$(document).ready(() => {
     $('#studentstable').DataTable({
     	'language' : {
     		'url' : '//cdn.datatables.net/plug-ins/1.10.13/i18n/Thai.json'
     	}
     });
+
+    $('.export-btn').click(e => { $('#exportForm').submit(); });
 });
 </script>
 @endsection
