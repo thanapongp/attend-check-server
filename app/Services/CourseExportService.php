@@ -134,7 +134,7 @@ class CourseExportService
             $attendances->each(function ($item) use (&$y, $i)  {
                 if ($item == 'yes') {
                     $text = 1;
-                } elseif ($item = 'late') {
+                } elseif ($item == 'late') {
                     $text = 0.5;
                 } else {
                     $text = 0;
