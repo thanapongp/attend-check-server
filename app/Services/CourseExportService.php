@@ -100,6 +100,11 @@ class CourseExportService
         $this->sheet->setCellValueByColumnAndRow($i++, 1, '% ขาด');
     }
 
+    /**
+     * Get all schedules from the course.
+     * 
+     * @return \Illuminate\Support\Collection
+     */
     private function getAllCourseSchedules()
     {
         return $this->course->schedules->map(function ($schedule) {
@@ -107,6 +112,11 @@ class CourseExportService
         });
     }
 
+    /**
+     * Write the attendance record data into table.
+     * 
+     * @param  integer &$i Temporary variable use to track the column position.
+     */
     private function writeStudentDataToTable(&$i = 2)
     {
         $this->getStudentsData()->each(function ($student) use (&$i) {
