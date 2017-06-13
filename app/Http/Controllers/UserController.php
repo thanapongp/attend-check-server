@@ -14,7 +14,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::where([
+            ['id', '!=', current_user()->id],
+            ['type_id', '!=', 1],
+            ['active', '=', true],
+        ])->get();
+
+        return view('dashboard.allusers', compact('users'));
     }
 
     /**
@@ -47,6 +53,18 @@ class UserController extends Controller
     public function show(User $user)
     {
         return view('dashboard.user.show', compact('user'));
+    }
+
+    /**
+     * Display the specified student.
+     *
+     * @param  string  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showStudent($id)
+    {
+        $user = User::where('username', $id)->first();
+        return view('dashboard.user.showStudent', compact('user'));
     }
 
     /**

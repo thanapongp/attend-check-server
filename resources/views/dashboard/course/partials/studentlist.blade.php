@@ -22,7 +22,9 @@
 			<td>{{$record->lateCount($course, $student)}}</td>
 			<td>{{$record->missingCount($course, $student)}}</td>
 			<td><span class="{{
-				$record->missingPercentage($course, $student) >= 80 ? 'text-danger' : 'text-success' 
+				$record->missingPercentage($course, $student) >= 80 
+				? 'text-danger' 
+				: 'text-success' 
 				}}">
 				{{$record->missingPercentage($course, $student)}} %
 			</span></td>

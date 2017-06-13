@@ -108,16 +108,9 @@ function checkCurrentTimeInrange($start_date, $end_date, $input_time)
     return (($user_ts >= $start_ts) && ($user_ts <= $end_ts));
 }
 
-if (! function_exists('current_user')) {
-    /**
-     * Get the current user instance.
-     * 
-     * @return Mixed
-     */
-    function current_user()
-    {
-        return \Illuminate\Support\Facades\Auth::user();
-    }
+function current_user()
+{
+    return \Illuminate\Support\Facades\Auth::user();
 }
 
 function getTextClass($type) 
@@ -145,4 +138,13 @@ function getIconClass($type)
     }
 
     return 'fa-times';
+}
+
+function previousLink()
+{
+    if (strpos($url = url()->previous(), env('APP_URL')) === false) {
+        return url('/dashboard');
+    }
+
+    return $url;
 }

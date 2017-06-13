@@ -145,4 +145,13 @@ class User extends Authenticatable
             ['active', '!=', true]
         ]);
     }
+
+    public function scopeNeedReviewByFacAdmin($query)
+    {
+        return $query->where([
+            ['type_id', '!=', '2'],
+            ['type_id', '!=', '4'],
+            ['active', '!=', true]
+        ]);
+    }
 }

@@ -16,10 +16,10 @@ class DashboardController extends Controller
             case 'admin':
             case 'fac_admin':
                 return $this->showUsersListDashboard($user);
+            case 'student':
+                return $this->showStudentDashboard($user);
             case 'teacher':
                 return $this->showTeacherDashboard();
-            case 'student':
-                return $this->showStudentDashboard();
         }
     }
 
@@ -32,8 +32,15 @@ class DashboardController extends Controller
 
     private function showUsersListDashboard(User $user)
     {
-        $users = User::needReviewByAdmin()->get();
+        $users = ((string) $user->type) == 'admin'
+                 ? User::needReviewByAdmin()->get()
+                 : User::needReviewByFacAdmin()->get();
         
         return view('dashboard.userlist', compact('users'));
+    }
+
+    private function showStudentDashboard($user)
+    {
+        return view('dashboard.user.studentProfile', compact('user'));
     }
 }

@@ -14,9 +14,9 @@
             วิชาในระบบทั้งหมด
         </a>
         @endif --}}
-        <a href="/dashboard/user/all" class="btn btn-raised-info pull-right" 
+        <a href="/dashboard" class="btn btn-raised-info pull-right" 
         style="margin-right: 1em">
-            ผู้ใช้ทั้งหมด
+            ผู้ใช้ที่ต้องยืนยัน
         </a>
         <div class="clearfix"></div>
     </div>
@@ -31,33 +31,22 @@
         </div>
         @endif
 
-        <table class="table">
+        <table class="table table-hover" id="allusers">
             <thead>
-                <th>ชื่อสกุล</th><th>ประเภท</th><th>E-mail</th><th>จัดการ</th>
+                <th>ชื่อสกุล</th><th>ประเภท</th><th>E-mail</th>
             </thead>
             @if($users->isNotEmpty())
             <tbody>
             @foreach($users as $user)
-                <tr>
+                <tr class="clickable-row" 
+                data-href="{{  
+                    (string) $user->type == 'student'
+                    ? url('/dashboard/student/'. $user->username)
+                    : url('/dashboard/user/'. $user->id)
+                }}">
                     <td>{{$user->fullname()}}</td>
                     <td>{{$user->type->label}}</td>
                     <td>{{$user->email}}</td>
-                    <td>
-                        <form action="/dashboard/user/{{$user->id}}/approve" method="POST" 
-                        style="display: inline;"> 
-                            {{csrf_field()}}
-                            <button type="submit" class="btn btn-raised-success">
-                                <i class="fa fa-check"></i> ยืนยัน
-                            </button>
-                        </form>
-                        <form action="/dashboard/user/{{$user->id}}/delete" method="POST" 
-                        style="display: inline;">
-                            {{csrf_field()}}
-                            <button type="submit" class="btn btn-raised-danger">
-                                <i class="fa fa-trash"></i> ลบ
-                            </button>
-                        </form>
-                    </td>
                 </tr>
             @endforeach
             </tbody>
@@ -70,4 +59,17 @@
         @endif
     </div>
 </div>
+@endsection
+
+@section('js')
+<script src="/js/clickablerow.js"></script>
+<script>
+$(document).ready(() => {
+    $('#allusers').DataTable({
+        'language' : {
+            'url' : '//cdn.datatables.net/plug-ins/1.10.13/i18n/Thai.json'
+        }
+    });
+});
+</script>
 @endsection

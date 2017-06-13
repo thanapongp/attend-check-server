@@ -27,7 +27,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     Route::post('/add-point-student', 'ScheduleController@addPointToCandidate');
 
     // User
+    Route::get('/user/all', 'UserController@index');
     Route::get('/user/{user}', 'UserController@show');
+    Route::get('/student/{id}', 'UserController@showStudent');
     Route::post('/user/{user}/approve', 'UserController@approve');
     Route::post('/user/{user}/delete', 'UserController@destroy');
 
