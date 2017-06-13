@@ -90,6 +90,11 @@ class User extends Authenticatable
         }
     }
 
+    public function isAdmin()
+    {
+        return ((string) $this->type) == 'admin';
+    }
+
     public function enroll($course)
     {
         $this->enrollments()->attach($course->id);
@@ -131,5 +136,13 @@ class User extends Authenticatable
             case 4:
                 return 'ลา';
         }
+    }
+
+    public function scopeNeedReviewByAdmin($query)
+    {
+        return $query->where([
+            ['type_id', '!=', '4'],
+            ['active', '!=', true]
+        ]);
     }
 }

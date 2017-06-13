@@ -29,5 +29,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     // User
     Route::get('/user/{user}', 'UserController@show');
     Route::post('/user/{user}/approve', 'UserController@approve');
+    Route::post('/user/{user}/delete', 'UserController@destroy');
 
 });
