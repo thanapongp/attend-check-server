@@ -37,11 +37,6 @@ class DevicesController extends Controller
         $this->userRepository = $userRepository; 
     }
 
-    public function getUserData(Request $request)
-    {
-        return $this->userRepository->getUserDataForMobileApp($request->user())->toArray();
-    }
-
     /**
      * Register new device.
      * 
@@ -72,6 +67,18 @@ class DevicesController extends Controller
         return response()->json(
             $this->userRepository->getUserDataForMobileApp($user->fresh())->toArray()
         );
+    }
+
+    public function getUserData(Request $request)
+    {
+        return $this->userRepository->getUserDataForMobileApp($request->user())->toArray();
+    }
+
+    public function getUserAttendanceRecord(Request $request)
+    {
+        return $this->userRepository
+                    ->getAttendanceDataForMobileApp($request->user())
+                    ->toArray();
     }
 
     /**

@@ -16,3 +16,5 @@ use Illuminate\Http\Request;
 Route::post('/register', 'Api\DevicesController@register');
 
 Route::middleware('auth:mobileapp')->get('/user', 'Api\DevicesController@getUserData');
+Route::middleware('auth:mobileapp')
+    ->get('/user/record', 'Api\DevicesController@getUserAttendanceRecord');

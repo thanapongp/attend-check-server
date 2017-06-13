@@ -43,4 +43,21 @@ class UserRepository
             'enrollments.periods'
         )->find($user->id);
     }
+
+    public function getAttendanceDataForMobileApp(User $user)
+    {
+        $record = resolve('\AttendCheck\Services\AttendanceRecordService');
+
+        return $user->enrollments->map(function ($course) use ($record, $user)  {
+            $result = [
+                'code' => $course->url(),
+                'attendCount' => $record->attendanceCount($course, $user),
+                'lateCount' => $record->lateCount($course, $user),
+                'missingCount' => $record->missingCount($course, $user),
+                'missingPercentage' => $record->missingPercentage($course, $user)
+            ];
+
+            return collect($result);
+        });
+    }
 }
