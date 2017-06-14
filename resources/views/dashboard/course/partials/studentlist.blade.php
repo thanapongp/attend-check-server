@@ -16,7 +16,7 @@
 	<tbody>
 		@foreach($course->students as $student)
 		<tr class="clickable-row" 
-		data-href="{{ url('/dashboard/student/'. $student->username) }}">
+		data-href="{{ url("/dashboard/course/{$course->url()}/student/{$student->username}") }}">
 			<td>{{$student->username}} {{$student->fullname()}}</td>
 			<td>{{$record->attendanceCount($course, $student)}}</td>
 			<td>{{$record->lateCount($course, $student)}}</td>
@@ -29,7 +29,9 @@
 				{{$record->missingPercentage($course, $student)}} %
 			</span></td>
 			<td>
-				<a href="{{ url('/dashboard/student/'. $student->username) }}" class="btn btn-raised-primary">
+				<a href="
+				{{ url("/dashboard/course/{$course->url()}/student/{$student->username}") }}" 
+				class="btn btn-raised-primary">
 					ดูข้อมูล
 				</a>
 			</td>

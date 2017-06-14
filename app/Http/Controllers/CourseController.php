@@ -3,11 +3,12 @@
 namespace AttendCheck\Http\Controllers;
 
 use Carbon\Carbon;
+use AttendCheck\User;
 use Illuminate\Http\Request;
 use AttendCheck\Api\Requestor;
 use AttendCheck\Course\Course;
-use AttendCheck\Repositories\CourseRepository as Repository;
 use AttendCheck\Services\CourseExportService as Exporter;
+use AttendCheck\Repositories\CourseRepository as Repository;
 
 class CourseController extends Controller
 {
@@ -100,6 +101,13 @@ class CourseController extends Controller
         $schedule = $course->schedules()->where('start_date', $date)->first();
 
         return view('dashboard.course.schedule', compact('course', 'schedule'));
+    }
+
+    public function showStudentRaw(Course $course, $id)
+    {
+        $user = User::where('username', $id)->first();
+
+        return view('dashboard.course.showStudentRaw', compact('course', 'user'));
     }
 
     /**

@@ -43,14 +43,8 @@ class AttendanceRecordService
      */
     public function missingCount($course, $user)
     {
-        $cancelCheckCount = $user->attendances
-            ->filter(function ($attendance) use ($course)  {
-            return ($attendance->course_id == $course->id) && 
-                   ($attendance->pivot->type == 3);
-            })->count();
-
         return max($course->schedules()->alreadyStarted()->get()->count() 
-                - $this->attendanceCount($course, $user), 0) + $cancelCheckCount;
+                - $this->attendanceCount($course, $user), 0);
     }
 
     /**
@@ -87,6 +81,10 @@ class AttendanceRecordService
             $schedule = $user->attendances
                              ->where('pivot.schedule_id', $schedule->id)
                              ->first();
+
+            if ($schedule->pivot->type == '3' || $schedule->pivot->type == '4') {
+                return 'no';
+            }
 
             return $schedule->pivot->type == '2' ? 'late' : 'yes';
         })->merge([

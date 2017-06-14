@@ -20,4 +20,9 @@ class Attendance extends Pivot
      * @var array
      */
     protected $dates = ['in_time'];
+
+    public function schedule()
+    {
+        return $this->belongsTo('\AttendCheck\Course\Schedule');
+    }
 }
