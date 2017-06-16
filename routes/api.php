@@ -1,7 +1,7 @@
 <?php
 
 Route::post('/register', 'Api\DevicesController@register');
-Route::get('/changedevice/request', 'Api\DevicesController@requestChangeDeviceToken');
+Route::post('/changedevice/request', 'Api\DevicesController@requestChangeDeviceToken');
 Route::post('/changedevice/change', 'Api\DevicesController@requestDataForNewDevice');
 
 Route::middleware('auth:mobileapp')->group(function () {
