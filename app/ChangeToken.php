@@ -23,4 +23,9 @@ class ChangeToken extends Model
         'updated_at',
         'expired',
     ];
+
+    public function expired()
+    {
+        return $this->expired->lte(\Carbon\Carbon::now());
+    }
 }

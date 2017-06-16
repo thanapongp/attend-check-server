@@ -53,38 +53,60 @@ class DevicesController extends Controller
 
         // If user is not available for registration, just bail out
         // with error request that returns from the method.
-        $response = $this->checkUserAvailbility($request);
+        $response = $this->userRepository->checkUserAvailbility($request);
         
-        if (! $response instanceof User) {
+        // Error occurred, return the response and bail.
+        if (! ($user = $response) instanceof User) {
             return $response;
         }
-
-        $user = $response;
 
         $user->password  = bcrypt($request->password);
         $user->email     = $request->email;
         $user->active    = true;
         $user->save();
 
-        $user->device()->save(new Device(['uid' => $uid = $this->generateNewDeviceUid()]));
+        $user->device()->save(new Device(['uid' => $this->generateNewDeviceUid()]));
 
         return response()->json(
             $this->userRepository->getUserDataForMobileApp($user->fresh())->toArray()
         );
     }
 
+    /**
+     * Get user data.
+     * 
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response|Array
+     */
     public function getUserData(Request $request)
     {
-        return $this->userRepository->getUserDataForMobileApp($request->user())->toArray();
+        return response()->json(
+            $this->userRepository->getUserDataForMobileApp($request->user())->toArray()
+        );
     }
 
+    /**
+     * WIP
+     * Get user attendance record.
+     * 
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response|Array
+     */
     public function getUserAttendanceRecord(Request $request)
     {
-        return $this->userRepository
-                    ->getAttendanceDataForMobileApp($request->user())
-                    ->toArray();
+        return response()->json(
+            $this->userRepository
+            ->getAttendanceDataForMobileApp($request->user())
+            ->toArray()
+        );
     }
 
+    /**
+     * Request the new change device token via email.
+     * 
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function requestChangeDeviceToken(Request $request)
     {
         if (! $request->has('username', 'password')) {
@@ -124,20 +146,11 @@ class DevicesController extends Controller
     }
 
     /**
-     * TODO: Move this to device model.
-     * Generate new device UID.
+     * Validate the change device token request.
      * 
-     * @return string
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response|\AttendCheck\User
      */
-    private function generateNewDeviceUid()
-    {
-        do {
-            $newUid = bin2hex(openssl_random_pseudo_bytes(ceil(5 / 2)));
-        } while (Device::where('uid', $newUid)->exists());
-
-        return $newUid;
-    }
-
     private function validateChangeDeviceTokenRequest(Request $request)
     {
         if (! $user = User::where('username', $request->username)->first()) {
@@ -155,15 +168,46 @@ class DevicesController extends Controller
         return $user;
     }
 
+    /**
+     * Send the change device token email to the user.
+     * 
+     * @param  \AttendCheck\User   $user
+     */
     private function sendChangeDeviceTokenEmail(User $user)
     {
-        $token = $user->token()->first() ?: $this->generateChangeDeviceToken($user);
+        // If the token is expired, then we will generate the new one.
+        $token = $user->token()->first()->expired()
+               ? $this->generateChangeDeviceToken($user)
+               : $user->token()->first()->token;
 
         //$user->notify(new DeviceChangeCode($user, $token));
     }
 
+    /**
+     * Generate new device UID.
+     * 
+     * @return string
+     */
+    private function generateNewDeviceUid()
+    {
+        do {
+            $newUid = bin2hex(openssl_random_pseudo_bytes(ceil(5 / 2)));
+        } while (Device::where('uid', $newUid)->exists());
+
+        return $newUid;
+    }
+
+    /**
+     * Generate the new change device token.
+     * 
+     * @param  \AttendCheck\User   $user
+     * @return string
+     */
     private function generateChangeDeviceToken(User $user)
     {
+        // Delete the old token
+        $user->token()->delete();
+
         do {
             $newToken = bin2hex(openssl_random_pseudo_bytes(ceil(5 / 2)));
         } while (ChangeToken::where('token', $newToken)->exists());

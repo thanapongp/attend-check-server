@@ -60,4 +60,28 @@ class UserRepository
             return collect($result);
         });
     }
+
+    /**
+     * Check for user avaibility to register.
+     * Return an instance of \Illuminate\Http\Response if not availible
+     * 
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response|\AttendCheck\User
+     */
+    public function checkUserAvailbility(Request $request)
+    {
+        if (! $user = User::where('username', $request->username)->first()) {
+            return response()->json(['error' => 'User not exists'], self::HTTP_NOTFOUND);
+        }
+
+        if ($user->email == $request->email) {
+            return response()->json(['error' => 'Email already exists'], self::HTTP_CONFLICT);
+        }
+
+        if ($user->password != null) {
+            return response()->json(['error' => 'User already active'], self::HTTP_CONFLICT);
+        }
+
+        return $user;
+    }
 }
