@@ -2,12 +2,15 @@
 
 namespace AttendCheck\Http\Controllers\Api;
 
+use Carbon\Carbon;
 use AttendCheck\User;
 use AttendCheck\Device;
+use AttendCheck\ChangeToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use AttendCheck\Http\Controllers\Controller;
 use AttendCheck\Repositories\UserRepository;
+use AttendCheck\Notifications\DeviceChangeCode;
 
 class DevicesController extends Controller 
 {
@@ -16,6 +19,7 @@ class DevicesController extends Controller
      * 
      * @var string
      */
+    const HTTP_UNAUTHORIZED = 401;
     const HTTP_CONFLICT = 409;
     const HTTP_NOTFOUND = 404;
     const HTTP_UNPROCESSABLE_ENTITY = 422;
@@ -81,6 +85,25 @@ class DevicesController extends Controller
                     ->toArray();
     }
 
+    public function requestChangeDeviceToken(Request $request)
+    {
+        if (! $request->has('username', 'password')) {
+            abort(self::HTTP_UNPROCESSABLE_ENTITY, 'Not enough arguments.');
+        }
+
+        // If request is not valid, just bail out with the error 
+        // that returns from the method.
+        $response = $this->validateChangeDeviceTokenRequest($request);
+        
+        if (! ($user = $response) instanceof User) {
+            return $response;
+        }
+
+        $this->sendChangeDeviceTokenEmail($user);
+
+        return response()->json(['status' => 'OK!']);
+    }
+
     /**
      * Validate registration request.
      * 
@@ -101,34 +124,6 @@ class DevicesController extends Controller
     }
 
     /**
-     * TODO: Move this to user repo.
-     * Check for user avaibility to register.
-     * Return an instance of \Illuminate\Http\Response if not availible
-     * 
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response|\AttendCheck\User
-     */
-    private function checkUserAvailbility(Request $request)
-    {
-        if (! $user = User::where('username', $request->username)->first()) {
-            return response()
-                    ->json(['error' => 'User not exists'], self::HTTP_NOTFOUND);
-        }
-
-        if ($user->email == $request->email) {
-            return response()
-                    ->json(['error' => 'Email already exists'], self::HTTP_CONFLICT);
-        }
-
-        if ($user->password != null) {
-            return response()
-                    ->json(['error' => 'User already active'], self::HTTP_CONFLICT);
-        }
-
-        return $user;
-    }
-
-    /**
      * TODO: Move this to device model.
      * Generate new device UID.
      * 
@@ -141,5 +136,44 @@ class DevicesController extends Controller
         } while (Device::where('uid', $newUid)->exists());
 
         return $newUid;
+    }
+
+    private function validateChangeDeviceTokenRequest(Request $request)
+    {
+        if (! $user = User::where('username', $request->username)->first()) {
+            return response()->json(['error' => 'User not exists'], self::HTTP_NOTFOUND);
+        }
+
+        if (! password_verify($request->password, $user->password)) {
+            return response()->json(['error' => 'Unauthenticated.'], self::HTTP_UNAUTHORIZED);
+        }
+
+        if ($user->device->isEmpty()) {
+            return response()->json(['error' => 'User has no device'], self::HTTP_CONFLICT);
+        }
+
+        return $user;
+    }
+
+    private function sendChangeDeviceTokenEmail(User $user)
+    {
+        $token = $user->token()->first() ?: $this->generateChangeDeviceToken($user);
+
+        //$user->notify(new DeviceChangeCode($user, $token));
+    }
+
+    private function generateChangeDeviceToken(User $user)
+    {
+        do {
+            $newToken = bin2hex(openssl_random_pseudo_bytes(ceil(5 / 2)));
+        } while (ChangeToken::where('token', $newToken)->exists());
+
+        $user->token()
+             ->save(new ChangeToken([
+                'token' => $newToken, 
+                'expired' => Carbon::now()->addMinutes(30),
+            ]));
+
+        return $newToken;
     }
 }

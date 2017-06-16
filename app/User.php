@@ -31,7 +31,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $with = ['attendances'];
+    protected $with = ['attendances', 'device'];
 
     /**
      * Get the user's type
@@ -75,6 +75,11 @@ class User extends Authenticatable
     public function device()
     {
         return $this->hasMany('AttendCheck\Device', 'owner_id');
+    }
+
+    public function token()
+    {
+        return $this->hasOne('AttendCheck\ChangeToken');
     }
 
     public function fullname()
