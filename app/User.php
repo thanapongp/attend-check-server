@@ -97,7 +97,7 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return ((string) $this->type) == 'admin';
+        return $this->type == 'admin';
     }
 
     public function enroll($course)
@@ -141,6 +141,11 @@ class User extends Authenticatable
             case 4:
                 return 'ลา';
         }
+    }
+
+    public function owns($course)
+    {
+        return $this->isAdmin() ? true : $course->teacher_id == $this->id;
     }
 
     public function scopeNeedReviewByAdmin($query)
