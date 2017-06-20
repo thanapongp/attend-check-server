@@ -127,6 +127,35 @@ class DevicesController extends Controller
     }
 
     /**
+     * Request the user data for new device.
+     * 
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function requestDataForNewDevice(Request $request)
+    {
+        if (! $request->has('token')) {
+            abort(self::HTTP_UNPROCESSABLE_ENTITY, 'Not enough arguments.');
+        }
+
+        $response = $this->validateNewDeviceDataRequest($request);
+
+        if (! ($user = $response) instanceof User) {
+            return $response;
+        }
+
+        $user->device()->delete();
+
+        $user->device()->save(new Device(['uid' => $this->generateNewDeviceUid()]));
+
+        ChangeToken::where('token', $request->token)->delete();
+
+        return response()->json(
+            $this->userRepository->getUserDataForMobileApp($user)->toArray()
+        );
+    }
+
+    /**
      * Validate registration request.
      * 
      * @param  \Illuminate\Http\Request $request
@@ -169,6 +198,25 @@ class DevicesController extends Controller
     }
 
     /**
+     * Validate the new device data request.
+     * 
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response|\AttendCheck\User
+     */
+    public function validateNewDeviceDataRequest(Request $request)
+    {
+        if (! $token = ChangeToken::where('token', $request->token)->first()) {
+            return response()->json(['error' => 'Token not exists'], self::HTTP_NOTFOUND);
+        }
+
+        if ($token->expired()) {
+            return response()->json(['error' => 'Token expired'], self::HTTP_CONFLICT);
+        }
+
+        return User::find($token->user_id);
+    }
+
+    /**
      * Send the change device token email to the user.
      * 
      * @param  \AttendCheck\User   $user
@@ -176,9 +224,9 @@ class DevicesController extends Controller
     private function sendChangeDeviceTokenEmail(User $user)
     {
         // If the token is expired, then we will generate the new one.
-        $token = $user->token()->first()->expired()
-               ? $this->generateChangeDeviceToken($user)
-               : $user->token()->first()->token;
+        if (! ($token = $user->token()->first()) || $token->expired()) {
+            $token = $this->generateChangeDeviceToken($user);
+        }
 
         //$user->notify(new DeviceChangeCode($user, $token));
     }

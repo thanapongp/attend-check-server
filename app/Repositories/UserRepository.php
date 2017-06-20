@@ -6,6 +6,14 @@ use AttendCheck\User;
 
 class UserRepository
 {
+    /**
+     * Various HTTP Error codes.
+     * 
+     * @var string
+     */
+    const HTTP_CONFLICT = 409;
+    const HTTP_NOTFOUND = 404;
+
     public function createUsersFromApiResponse(array $users)
     {
         // First, we create the account for student that don't have an account.
