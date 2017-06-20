@@ -15,8 +15,19 @@ class AttendanceRecordService
     {
         return $user->attendances->filter(function ($attendance) use ($course)  {
             return ($attendance->course_id == $course->id) && 
-                   ($attendance->pivot->type == 1 || $attendance->pivot->type == 2);
+                   ($attendance->pivot->type == 1 || $attendance->pivot->type == 2
+                    || $attendance->pivot->type == 4);
         })->count();
+    }
+
+    public function attendancePercentage($course, $user)
+    {
+        $schedulesCount = $course->schedules()->alreadyStarted()->get()->count();
+        $attendanceCount = $this->attendanceCount($course, $user);
+
+        return $schedulesCount == 0 
+               ? 0 
+               : round(($attendanceCount / $schedulesCount) * 100);
     }
 
     /**

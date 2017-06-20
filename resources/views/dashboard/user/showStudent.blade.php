@@ -46,7 +46,15 @@
             @foreach($user->enrollments as $course)
                 <tr>
                     <td>{{$course->code}}</td>
-                    <td>{{$course->name}} (Section {{$course->section}})</td>
+                    <td>
+                        @if(current_user()->owns($course))
+                        <a href="{{ url("/dashboard/course/{$course->url()}") }}">
+                            {{$course->name}} (Section {{$course->section}})
+                        </a>
+                        @else
+                        {{$course->name}} (Section {{$course->section}})
+                        @endif
+                    </td>
                     <td>{{$course->year}} ({{$course->semester}})</td>
                     <td>{{$record->attendanceCount($course, $user)}}</td>
                     <td>{{$record->lateCount($course, $user)}}</td>

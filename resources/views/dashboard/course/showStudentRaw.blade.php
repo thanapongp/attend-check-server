@@ -38,6 +38,7 @@
         <table class="table table-stripped">
             <thead>
                 <th>วันที่</th>
+                <th>เวลาเข้าเรียน</th>
                 <th>เข้าเรียน</th>
                 <th>สาย</th>
                 <th>ขาด</th>
@@ -51,12 +52,24 @@
             @endphp
                 <tr>
                     <td>
-                    {{(new \Jenssegers\Date\Date($schedule->start_date))->format('j F Y H:i')}}
+                    <a href="{{url('/dashboard/course/'. $course->url() .'/'. $schedule->url())}}">
+                        {{(new \Jenssegers\Date\Date($schedule->start_date))->format('j F Y H:i')}}
+                    </a>
+                    </td>
+                    <td>
+                        @if($attendance && 
+                            ($attendance->pivot->type == 1 ||  $attendance->pivot->type == 2))
+                            {{(new \Jenssegers\Date\Date($attendance->in_time))->format('H:i')}}
+                        @endif
                     </td>
                     <td>
                         @if($attendance && 
                            ($attendance->pivot->type == 1 || $attendance->pivot->type == 2))
                         <i class="fa fa-check"></i>
+                        @endif
+
+                        @if($attendance && $attendance->pivot->type == 4)
+                        ลา
                         @endif
                     </td>
                     <td>
@@ -65,7 +78,7 @@
                         @endif
                     </td>
                     <td>
-                        @if(!$attendance || ($attendance->pivot->type == 3 || $attendance->pivot->type == 4))
+                        @if(!$attendance || ($attendance->pivot->type == 3))
                             <i class="fa fa-check"></i>
                         @endif
                     </td>
@@ -73,7 +86,9 @@
             @endforeach
                 <tr>
                     <td>สรุป</td>
-                    <td>{{$record->attendanceCount($course, $user)}} ครั้ง</td>
+                    <td></td>
+                    <td>{{$record->attendanceCount($course, $user)}} ครั้ง 
+                     ({{$record->attendancePercentage($course, $user)}} %)</td>
                     <td>{{$record->lateCount($course, $user)}} ครั้ง</td>
                     <td>{{$record->missingCount($course, $user)}} ครั้ง 
                     ({{$record->missingPercentage($course, $user)}} %)</td>
