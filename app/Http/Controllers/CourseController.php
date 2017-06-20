@@ -20,6 +20,8 @@ class CourseController extends Controller
         Repository $repository,
         Exporter $exporter)
     {
+        $this->middleware('role:teacher');
+        
         $this->requestor = $requestor;
         $this->repository = $repository;
         $this->exporter = $exporter;

@@ -8,31 +8,31 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function showMainPage()
+    public function showMainPage(Request $request)
     {
-        $user = Auth::user();
+        $user = $request->user();
 
-        switch ((string) $user->type) {
+        switch ($user->type) {
             case 'admin':
             case 'fac_admin':
                 return $this->showUsersListDashboard($user);
             case 'student':
                 return $this->showStudentDashboard($user);
             case 'teacher':
-                return $this->showTeacherDashboard();
+                return $this->showTeacherDashboard($user);
         }
     }
 
-    private function showTeacherDashboard()
+    private function showTeacherDashboard(User $user)
     {
-        return view('dashboard.main', [
-            'courses' => Auth::user()->courses()->get()
-        ]);
+        $courses = $user->courses()->get();
+        
+        return view('dashboard.main', compact('courses'));
     }
 
     private function showUsersListDashboard(User $user)
     {
-        $users = ((string) $user->type) == 'admin'
+        $users = $user->isAdmin()
                  ? User::needReviewByAdmin()->get()
                  : User::needReviewByFacAdmin()->get();
         
