@@ -7,6 +7,7 @@ use AttendCheck\User;
 use Illuminate\Http\Request;
 use AttendCheck\Api\Requestor;
 use AttendCheck\Course\Course;
+use AttendCheck\Course\Schedule;
 use AttendCheck\Services\CourseExportService as Exporter;
 use AttendCheck\Repositories\CourseRepository as Repository;
 
@@ -90,6 +91,19 @@ class CourseController extends Controller
     public function show(Course $course)
     {
         return view('dashboard.course.manage', compact('course'));
+    }
+
+    public function addSchedule(Course $course, Request $request)
+    {
+        $date = convertThaiDateToYmd($request->date);
+
+        $room = $request->room;
+        $start_date = $date . ' ' . $request->start_time . ':00';
+        $end_date = $date . ' ' . $request->end_time . ':00';
+
+        $course->schedules()->save(new Schedule(compact('room', 'start_date', 'end_date')));
+
+        return back()->with('status', 'เพิ่มคาบเรียนสำเร็จ');
     }
 
     /**

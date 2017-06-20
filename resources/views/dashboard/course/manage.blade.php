@@ -76,6 +76,26 @@ $(document).ready(() => {
     });
 
     $('.export-btn').click(e => { $('#exportForm').submit(); });
+
+    $('.date-pick').datetimepicker({
+        locale: 'th',
+        format: 'D MMM YYYY',
+        useCurrent: false
+    });
+
+    $('.time').datetimepicker({
+        locale: 'th',
+        format: 'H:mm',
+        useCurrent: false
+    });
+
+    $('#start_time').on('dp.change', function (e) {
+        $('#end_time').data('DateTimePicker').minDate(e.date);
+    });
+
+    $('#end_time').on('dp.change', function (e) {
+        $('#start_time').data('DateTimePicker').maxDate(e.date);
+    });
 });
 </script>
 @endsection
