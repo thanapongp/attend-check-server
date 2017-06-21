@@ -45,6 +45,14 @@
 		{{-- tabs content --}}
 		@inject('record', '\AttendCheck\Services\AttendanceRecordService')
 		<div class="tab-content dashboard-tab">
+			@if(session('status'))
+			<div class="alert alert-info alert-dismissible" role="alert" style="margin: 1rem">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				{{session('status')}}
+			</div>
+			@endif
 			<div class="tab-pane fade in active" id="schedule">
 				@include('dashboard.course.partials.schedulelist')
 			</div>
@@ -69,33 +77,33 @@
 <script src="/js/clickablerow.js"></script>
 <script>
 $(document).ready(() => {
-    $('#studentstable').DataTable({
-    	'language' : {
-    		'url' : '//cdn.datatables.net/plug-ins/1.10.13/i18n/Thai.json'
-    	}
-    });
+	$('#studentstable').DataTable({
+		'language' : {
+			'url' : '//cdn.datatables.net/plug-ins/1.10.13/i18n/Thai.json'
+		}
+	});
 
-    $('.export-btn').click(e => { $('#exportForm').submit(); });
+	$('.export-btn').click(e => { $('#exportForm').submit(); });
 
-    $('.date-pick').datetimepicker({
-        locale: 'th',
-        format: 'D MMM YYYY',
-        useCurrent: false
-    });
+	$('.date-pick').datetimepicker({
+		locale: 'th',
+		format: 'D MMM YYYY',
+		useCurrent: false
+	});
 
-    $('.time').datetimepicker({
-        locale: 'th',
-        format: 'H:mm',
-        useCurrent: false
-    });
+	$('.time').datetimepicker({
+		locale: 'th',
+		format: 'H:mm',
+		useCurrent: false
+	});
 
-    $('#start_time').on('dp.change', function (e) {
-        $('#end_time').data('DateTimePicker').minDate(e.date);
-    });
+	$('#start_time').on('dp.change', function (e) {
+		$('#end_time').data('DateTimePicker').minDate(e.date);
+	});
 
-    $('#end_time').on('dp.change', function (e) {
-        $('#start_time').data('DateTimePicker').maxDate(e.date);
-    });
+	$('#end_time').on('dp.change', function (e) {
+		$('#start_time').data('DateTimePicker').maxDate(e.date);
+	});
 });
 </script>
 @endsection

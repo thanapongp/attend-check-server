@@ -102,7 +102,9 @@ class User extends Authenticatable
 
     public function enroll($course)
     {
-        $this->enrollments()->attach($course->id);
+        if (! $this->enrollments->contains('id', $course->id)) {
+            $this->enrollments()->attach($course->id);
+        }
     }
 
     public function isAttended($schedule)

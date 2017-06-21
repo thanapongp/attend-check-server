@@ -154,6 +154,13 @@ class CourseController extends Controller
         return response()->download($this->exporter->export($course));
     }
 
+    public function syncStudents(Course $course)
+    {
+        $this->repository->findAndEnrollStudent($course);
+
+        return back()->with('status', 'Sync ข้อมูลสำเร็จ');
+    }
+
     /**
      * Remove the specified resource from storage.
      *
