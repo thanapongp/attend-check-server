@@ -175,6 +175,15 @@ class CourseController extends Controller
         return back()->with('status', 'เพิ่มข้อมูลสำเร็จ');
     }
 
+    public function addManyStudents(Course $course, Request $request)
+    {
+        $users = $this->userRepo->createManyUsersFromTextfield($request->data);
+        
+        $users->each->enroll($course);
+
+        return back()->with('status', 'เพิ่มข้อมูลสำเร็จ');
+    }
+
     /**
      * Remove the specified resource from storage.
      *

@@ -11,8 +11,8 @@
 				</a>
 			</li>
 			<li>
-				<a href="#">
-					เพิ่มรายชื่อนศ. จากไฟล์
+				<a href="#addManyForm" data-toggle="modal" data-target="#addManyForm">
+					เพิ่มรายชื่อนศ. หลายคน
 				</a>
 			</li>
 			<li>
@@ -88,6 +88,41 @@
 									<i class="fa fa-plus"></i> เพิ่ม
 								</button>
 							</div>
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{{-- addManyForm --}}
+	<div class="modal fade" id="addManyForm" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">เพิ่มรายชื่อนศ. หลายคน</h4>
+				</div>
+				<div class="modal-body">
+					<form action="{{url("/dashboard/course/{$course->url()}/addmanystudents#students")}}" method="POST">
+						<div class="form-group">
+							<label for="username" class="control-label">ข้อมูล</label>
+							<textarea type="number" class="form-control" name="data" 
+							placeholder="5611400110,นาย,ชื่อ,นามสกุล บรรทัดละ 1 คน" required></textarea>
+						</div>
+
+						{{csrf_field()}}
+
+						<div class="form-group">
+							<button type="submit" class="btn btn-success pull-right">
+								<i class="fa fa-plus"></i> เพิ่ม
+							</button>
+							<button type="button" class="btn btn-default pull-right" 
+							data-dismiss="modal" style="margin-right: 1rem">
+								ยกเลิก
+							</button>
+							<div class="clearfix"></div>
 						</div>
 
 					</form>

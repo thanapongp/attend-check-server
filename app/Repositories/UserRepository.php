@@ -42,13 +42,33 @@ class UserRepository
         });
     }
 
-    public function createSingleUser(array $data)
+    public function createSingleUser($data)
     {
+        if ($data instanceof \Illuminate\Support\Collection) {
+            $data = $data->toArray();
+        }
+
         if ($user = User::where('username', $data['username'])->first()) {
             return $user;
         }
 
         return User::create(array_merge($data, ['faculty_id' => 11, 'type_id' => 4]));
+    }
+
+    public function createManyUsersFromTextfield($data)
+    {
+        return collect(explode("\r\n", $data))->map(function ($item) {
+            $field = explode(",", str_replace('"', '', $item));
+
+            return collect([
+                'username' => $field[0],
+                'title' => $field[1],
+                'name' => $field[2],
+                'lastname' => $field[3],
+            ]);
+        })->map(function ($userData) {
+            return $this->createSingleUser($userData);
+        });
     }
 
     public function getUserDataForMobileApp(User $user)
