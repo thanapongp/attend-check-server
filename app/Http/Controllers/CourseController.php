@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use AttendCheck\Api\Requestor;
 use AttendCheck\Course\Course;
 use AttendCheck\Course\Schedule;
+use AttendCheck\Repositories\UserRepository;
 use AttendCheck\Services\CourseExportService as Exporter;
 use AttendCheck\Repositories\CourseRepository as Repository;
 
@@ -15,16 +16,20 @@ class CourseController extends Controller
 {
     protected $requestor;
     protected $repository;
+    protected $userRepo;
+    protected $exporter;
 
     public function __construct(
         Requestor $requestor, 
         Repository $repository,
-        Exporter $exporter)
+        Exporter $exporter, 
+        UserRepository $userRepo)
     {
         $this->middleware('role:teacher');
         
         $this->requestor = $requestor;
         $this->repository = $repository;
+        $this->userRepo = $userRepo;
         $this->exporter = $exporter;
     }
 
@@ -159,6 +164,15 @@ class CourseController extends Controller
         $this->repository->findAndEnrollStudent($course);
 
         return back()->with('status', 'Sync ข้อมูลสำเร็จ');
+    }
+
+    public function addStudent(Course $course, Request $request)
+    {
+        $user = $this->userRepo->createSingleUser($request->all());
+
+        $user->enroll($course);
+
+        return back()->with('status', 'เพิ่มข้อมูลสำเร็จ');
     }
 
     /**

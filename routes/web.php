@@ -21,6 +21,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     Route::post('/course/{course}/syncstudents', 'CourseController@syncStudents');
     Route::post('/course/{course}/export', 'CourseController@export');
 
+    Route::post('/course/{course}/addstudent', 'CourseController@addstudent');
+
     Route::get('/course/{course}/{schedule}', 'CourseController@showSchedule');
     Route::get('/course/{course}/student/{id}', 'CourseController@showStudentRaw');
     

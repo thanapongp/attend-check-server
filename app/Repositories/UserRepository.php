@@ -42,6 +42,15 @@ class UserRepository
         });
     }
 
+    public function createSingleUser(array $data)
+    {
+        if ($user = User::where('username', $data['username'])->first()) {
+            return $user;
+        }
+
+        return User::create(array_merge($data, ['faculty_id' => 11, 'type_id' => 4]));
+    }
+
     public function getUserDataForMobileApp(User $user)
     {
         return User::with(
