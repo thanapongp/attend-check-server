@@ -106,10 +106,13 @@
 				</div>
 				<div class="modal-body">
 					<form action="{{url("/dashboard/course/{$course->url()}/addmanystudents#students")}}" method="POST">
+						<p>ตัวออย่างการกรอกข้อมูล: <br>
+						<code>5611400110,นาย,ชื่อ,นามสกุล</code> บรรทัดละ 1 คน
+						</p>
 						<div class="form-group">
 							<label for="username" class="control-label">ข้อมูล</label>
 							<textarea type="number" class="form-control" name="data" 
-							placeholder="5611400110,นาย,ชื่อ,นามสกุล บรรทัดละ 1 คน" required></textarea>
+							placeholder="บรรทัดละ 1 คน" required></textarea>
 						</div>
 
 						{{csrf_field()}}
@@ -151,7 +154,8 @@
 		<tr class="clickable-row" 
 		data-href="{{ url("/dashboard/course/{$course->url()}/student/{$student->username}") }}">
 			<td>{{$student->username}} {{$student->fullname()}}</td>
-			<td>{{$record->attendanceCount($course, $student)}}</td>
+			<td>{{$record->attendanceCount($course, $student)}} 
+			({{$record->attendancePercentage($course, $student)}} %)</td>
 			<td>{{$record->lateCount($course, $student)}}</td>
 			<td>{{$record->missingCount($course, $student)}}</td>
 			<td><span class="{{

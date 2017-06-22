@@ -94,9 +94,10 @@ class CourseExportService
             $this->sheet->setCellValueByColumnAndRow($i++, 1, $date);
         });
 
-        $this->sheet->setCellValueByColumnAndRow($i++, 1, 'เข้าเรียน');
+        $this->sheet->setCellValueByColumnAndRow($i++, 1, 'เข้าเรียน / ลา');
         $this->sheet->setCellValueByColumnAndRow($i++, 1, 'สาย');
         $this->sheet->setCellValueByColumnAndRow($i++, 1, 'ขาด');
+        $this->sheet->setCellValueByColumnAndRow($i++, 1, '% เข้าเรียน');
         $this->sheet->setCellValueByColumnAndRow($i++, 1, '% ขาด');
     }
 
@@ -128,7 +129,7 @@ class CourseExportService
 
             $attendances = $student->splice(2, $this->course->schedules->count());
 
-            $stat = $student->take(-4);
+            $stat = $student->take(-5);
 
             // Because we never know the exact number of each course schedules,
             // we need to have one variable that keep track what column are
@@ -142,12 +143,18 @@ class CourseExportService
 
             // TODO: Maybe change this. idk.
             $attendances->each(function ($item) use (&$y, $i)  {
-                if ($item == 'yes') {
-                    $text = 1;
-                } elseif ($item == 'late') {
-                    $text = 0.5;
-                } else {
-                    $text = 0;
+                switch ($item) {
+                    case 'yes':
+                        $text = 1;
+                        break;
+                    case 'late':
+                        $text = 0.5;
+                        break;
+                    case 'absence':
+                        $text = 'ล';
+                        break;
+                    default:
+                        $text = 0;
                 }
 
                 $this->sheet->setCellValueByColumnAndRow($y++, $i, $text);

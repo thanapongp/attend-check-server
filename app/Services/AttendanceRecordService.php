@@ -93,8 +93,12 @@ class AttendanceRecordService
                              ->where('pivot.schedule_id', $schedule->id)
                              ->first();
 
-            if ($schedule->pivot->type == '3' || $schedule->pivot->type == '4') {
+            if ($schedule->pivot->type == '3') {
                 return 'no';
+            }
+
+            if ($schedule->pivot->type == '4') {
+                return 'absence';
             }
 
             return $schedule->pivot->type == '2' ? 'late' : 'yes';
@@ -102,6 +106,7 @@ class AttendanceRecordService
             $this->attendanceCount($course, $user),
             $this->lateCount($course, $user),
             $this->missingCount($course, $user),
+            $this->attendancePercentage($course, $user) . ' %',
             $this->missingPercentage($course, $user) . ' %',
         ])->prepend([
             $user->username,
