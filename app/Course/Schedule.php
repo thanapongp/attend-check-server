@@ -57,6 +57,11 @@ class Schedule extends Model
         return $this->hasMany('AttendCheck\Course\CheckIn');
     }
 
+    public function started()
+    {
+        return $this->start_date->lte(\Carbon\Carbon::now());
+    }
+
     /**
      * Scope a query to order schedule to make 
      * passed date comes after upcoming date.

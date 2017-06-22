@@ -114,6 +114,70 @@ class AttendanceRecordService
         ])->flatten();
     }
 
+    public function getMobileFormat($course, $user)
+    {
+        $i = 1;
+        return $course->schedules->map(function ($schedule) use ($user, &$i)  {
+            $thaiDate = $i++ . '. ' . thaiDate($schedule->start_date->format('j/m/Y (H:i)'));
+
+            if (! $schedule->started()) {
+                return [
+                    'date' => $thaiDate,
+                    'type' => 'ยังไม่เริ่ม',
+                    'time' => ''
+                ];
+            }
+
+            if (! $user->attendances->contains('pivot.schedule_id', $schedule->id)) {
+                return [
+                    'date' => $thaiDate,
+                    'type' => 'ขาด',
+                    'time' => ''
+                ];
+            }
+
+            $schedule = $user->attendances
+                             ->where('pivot.schedule_id', $schedule->id)
+                             ->first();
+
+            if ($schedule->pivot->type == '3') {
+                return [
+                    'date' => $thaiDate,
+                    'type' => 'ขาด',
+                    'time' => ''
+                ];
+            }
+
+            if ($schedule->pivot->type == '4') {
+                return [
+                    'date' => $thaiDate,
+                    'type' => 'ลา',
+                    'time' => ''
+                ];
+            }
+
+            return $schedule->pivot->type == '2' 
+                    ? [
+                        'date' => $thaiDate,
+                        'type' => 'สาย',
+                        'time' => $schedule->pivot->in_time->format('H:i')
+                    ]
+                    : [
+                        'date' => $thaiDate,
+                        'type' => 'มา',
+                        'time' => $schedule->pivot->in_time->format('H:i')
+                    ];
+        })->merge([
+            ['date' => "สรุปการเข้าเรียน:",
+            'type' => $this->attendanceCount($course, $user) . " ครั้ง",
+            'time' => $this->attendancePercentage($course, $user) . "%"],
+
+            ['date' => "สรุปการขาดเรียน:",
+            'type' => $this->missingCount($course, $user) . " ครั้ง",
+            'time' => $this->missingPercentage($course, $user) . "%"],
+        ]);
+    }
+
     /**
      * Get attendance count of specified schedule.
      * 

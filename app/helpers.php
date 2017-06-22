@@ -148,3 +148,20 @@ function previousLink()
 
     return $url;
 }
+
+function thaiDate($date)
+{
+    $months = [
+        '', "ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."
+    ];
+
+    list($date, $time) = explode(' ', $date);
+
+    $dateSplited = explode('/', $date);
+
+    $dateSplited[1] = $months[(int) $dateSplited[1]];
+
+    $dateSplited[2] = ((int) $dateSplited[2]) + 543;
+
+    return implode(' ', $dateSplited) . ' ' . $time;
+}

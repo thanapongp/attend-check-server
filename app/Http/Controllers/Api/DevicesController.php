@@ -94,11 +94,12 @@ class DevicesController extends Controller
      */
     public function getUserAttendanceRecord(Request $request)
     {
-        return response()->json(
-            $this->userRepository
-            ->getAttendanceDataForMobileApp($request->user())
-            ->toArray()
-        );
+        $course = resolve('\AttendCheck\Repositories\CourseRepository')
+                  ->findFromURL($request->course);
+
+        $record = resolve('\AttendCheck\Services\AttendanceRecordService');
+
+        return $record->getMobileFormat($course, $request->user());
     }
 
     /**
