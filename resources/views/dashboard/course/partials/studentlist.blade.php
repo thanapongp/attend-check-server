@@ -151,9 +151,12 @@
 	</thead>
 	<tbody>
 		@foreach($course->students as $student)
-		<tr class="clickable-row" 
-		data-href="{{ url("/dashboard/course/{$course->url()}/student/{$student->username}") }}">
-			<td>{{$student->username}} {{$student->fullname()}}</td>
+		<tr>
+			<td>
+				<a href="{{ url("/dashboard/course/{$course->url()}/student/{$student->username}") }}">
+					{{$student->username}} {{$student->fullname()}}
+				</a>
+			</td>
 			<td>{{$record->attendanceCount($course, $student)}} 
 			({{$record->attendancePercentage($course, $student)}} %)</td>
 			<td>{{$record->lateCount($course, $student)}}</td>
@@ -166,11 +169,31 @@
 				{{$record->missingPercentage($course, $student)}} %
 			</span></td>
 			<td>
-				<a href="
-				{{ url("/dashboard/course/{$course->url()}/student/{$student->username}") }}" 
-				class="btn btn-raised-primary">
-					ดูข้อมูล
-				</a>
+				<div class="btn-group">
+					<a href="
+					{{ url("/dashboard/course/{$course->url()}/student/{$student->username}") }}" 
+					class="btn btn-raised-primary">
+						ดูข้อมูล
+					</a>
+					<button type="button" class="btn btn-raised-primary dropdown-toggle" 
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="#" 
+							onclick="event.preventDefault(); 
+							document.getElementById('formdelete_{{$student->id}}').submit();">
+								<i class="fa fa-trash"></i> ถอนรายวิชา
+							</a>
+						</li>
+					</ul>
+
+					<form action="{{url("/dashboard/user/{$student->id}/delete#students")}}"
+					id="formdelete_{{$student->id}}" method="POST">
+						{{csrf_field()}}
+					</form>
+				</div>
 			</td>
 		</tr>
 		@endforeach
