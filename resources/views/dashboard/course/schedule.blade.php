@@ -21,7 +21,7 @@
 
 	<div class="panel-heading">
 		<span>คาบ {{(new \Jenssegers\Date\Date($schedule->start_date))->format('j F Y H:i')}} ห้อง {{$schedule->room}}</span>
-		{{-- <span class="pull-right schedule-option dropdown">
+		<span class="pull-right schedule-option dropdown">
 			<a id="courseOption" href="#" data-toggle="dropdown">
 				<i class="fa fa-cog"></i>
 			</a>
@@ -33,7 +33,7 @@
 					</a>
 				</li>
 			</ul>
-		</span> --}}
+		</span>
 	</div>
 
 	<div class="panel-body">
