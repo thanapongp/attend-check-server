@@ -69,6 +69,12 @@ class CourseController extends Controller
                             ->withInput();
         }
 
+        if ($this->repository->courseExisted($response)) {
+            return redirect('/dashboard/course/add')
+                            ->with('status', 'มีรายวิชานี้ในระบบแล้ว')
+                            ->withInput();
+        }
+
         return view('dashboard.course.searchResult', ['course' => $response]);
     }
 

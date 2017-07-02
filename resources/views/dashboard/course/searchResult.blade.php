@@ -100,7 +100,7 @@
 				<label for="start_date" class="col-sm-3 control-label">วันที่เริ่มเรียนคาบแรก</label>
 				<div class="col-sm-4">
 					<div class='input-group date' id="start_date">
-                		<input type='text' class="form-control" name="start_date" placeholder="วันที่เริ่มเรียนคาบแรก" />
+                		<input type='text' class="form-control" name="start_date" placeholder="วันที่เริ่มเรียนคาบแรก" required/>
                 		<span class="input-group-addon">
                     		<span class="fa fa-calendar">
                     		</span>
@@ -113,7 +113,7 @@
 				<label for="end_date" class="col-sm-3 control-label">วันที่เริ่มเรียนคาบสุดท้าย</label>
 				<div class="col-sm-4">
 					<div class='input-group date' id="end_date">
-                		<input type='text' class="form-control" name="end_date" placeholder="วันที่เริ่มเรียนคาบสุดท้าย"/>
+                		<input type='text' class="form-control" name="end_date" placeholder="วันที่เริ่มเรียนคาบสุดท้าย" required />
                 		<span class="input-group-addon">
                     		<span class="fa fa-calendar">
                     		</span>
