@@ -229,7 +229,7 @@ class DevicesController extends Controller
             $token = $this->generateChangeDeviceToken($user);
         }
 
-        //$user->notify(new DeviceChangeCode($user, $token));
+        $user->notify(new DeviceChangeCode($user, $token));
     }
 
     /**
