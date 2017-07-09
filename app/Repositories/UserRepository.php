@@ -3,6 +3,7 @@
 namespace AttendCheck\Repositories;
 
 use AttendCheck\User;
+use Illuminate\Http\Request;
 
 class UserRepository
 {

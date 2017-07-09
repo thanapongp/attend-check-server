@@ -69,7 +69,7 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(
             'AttendCheck\Course\Schedule', 'attendances', 'student_id', 'schedule_id'
-        )->withPivot('in_time', 'type')->using('AttendCheck\Course\Attendance');
+        )->withPivot('in_time', 'out_time', 'type')->using('AttendCheck\Course\Attendance');
     }
 
     public function device()

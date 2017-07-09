@@ -80,6 +80,16 @@ class CourseRepository
         return $course->fresh();
     }
 
+    public function courseExisted($response)
+    {
+        return Course::where([
+            ['code', '=', $response->COURSECODE],
+            ['semester', '=', getSemester($response->SEMESTER)],
+            ['year', '=', $response->ACADYEAR],
+            ['section', '=', $response->SUBDETAIL[0]->SECTION]
+        ])->exists();
+    }
+
     public function findFromURL($url)
     {
         $url = explode('-', $url);

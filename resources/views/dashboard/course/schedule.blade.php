@@ -54,6 +54,7 @@
 			<thead>
 				<th>ชื่อ</th>
 				<th>เวลาเข้าเรียน</th>
+				<th>เวลาออกจากห้องเรียน</th>
 				<th>สถานะ</th>
 				<th>เช็คชื่อ</th>
 			</thead>
@@ -66,12 +67,23 @@
 						</a>
 					</td>
 					<td>
-						@if($student->isAttended($schedule) 
-							&& ($student->isAttended($schedule) != 3))
-						{{(new \Jenssegers\Date\Date(
-							$student->attendances->where('id', $schedule->id)->first()
-									->pivot->in_time
-						))->format('H:i')}}
+						@if($student->isAttended($schedule) && ($student->isAttended($schedule) != 3))
+							@php 
+							$in_time = $student->attendances->where('id', $schedule->id)->first()->pivot->in_time;
+							$in_time = (new \Jenssegers\Date\Date($in_time))->format('H:i');
+							@endphp
+							{{$in_time}}
+						@endif
+					</td>
+					<td>
+						@if($student->isAttended($schedule) && ($student->isAttended($schedule) != 3))
+							@php 
+							$out_time = $student->attendances->where('id', $schedule->id)->first()->pivot->out_time;
+							$out_time = (new \Jenssegers\Date\Date($out_time))->format('H:i');
+							@endphp
+							@if($in_time != $out_time)
+								{{$out_time}}
+							@endif
 						@endif
 					</td>
 					<td data-stuid="{{$student->id}}">{{$student->attendStatus($schedule)}}</td>

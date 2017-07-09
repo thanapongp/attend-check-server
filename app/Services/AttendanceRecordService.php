@@ -85,6 +85,10 @@ class AttendanceRecordService
     public function getExcelFormat($course, $user)
     {
         return $course->schedules->map(function ($schedule) use ($user)  {
+            if (! $schedule->started()) {
+                return 'not started';
+            }
+            
             if (! $user->attendances->contains('pivot.schedule_id', $schedule->id)) {
                 return 'no';
             }

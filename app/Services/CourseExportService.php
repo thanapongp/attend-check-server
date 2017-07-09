@@ -153,6 +153,9 @@ class CourseExportService
                     case 'absence':
                         $text = 'ล';
                         break;
+                    case 'not started':
+                        $text = '';
+                        break;
                     default:
                         $text = 0;
                 }

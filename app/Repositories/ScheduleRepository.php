@@ -76,15 +76,15 @@ class ScheduleRepository
             $course->periods->each(function ($period) use ($weekStart, $course) {
                 $schedule = new Schedule;
 
-                $date = ($period->day == self::MONDAY) ? 
-                $weekStart->toDateString() : ($weekStart->next($period->day))->toDateString();
+                $date = ($period->day == self::MONDAY) ? $weekStart 
+                        : $weekStart->next($period->day);
 
                 $schedule->start_date = Carbon::parse(
-                    $date . ' ' . $period->start_time
+                    $date->toDateString() . ' ' . $period->start_time
                 );
 
                 $schedule->end_date = Carbon::parse(
-                    $date . ' ' . $period->end_time
+                    $date->toDateString() . ' ' . $period->end_time
                 );
 
                 $schedule->room = $period->room;
