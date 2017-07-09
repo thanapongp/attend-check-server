@@ -19,7 +19,7 @@ class Attendance extends Pivot
      *
      * @var array
      */
-    protected $dates = ['in_time'];
+    protected $dates = ['in_time', 'out_time'];
 
     public function schedule()
     {

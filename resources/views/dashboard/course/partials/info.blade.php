@@ -104,9 +104,44 @@
 
 	<div class="row">
 		<div class="col-sm-3 col-sm-offset-3">
-			<a href="#" class="btn btn-raised-success">
+			<button type="button" class="btn btn-raised-success" data-toggle="modal" 
+			data-target="#editLateTimeModal">
 				<i class="fa fa-edit"></i> แก้ไข
-			</a>
+			</button>
 		</div>
 	</div>
 </form>
+
+
+<div class="modal fade" id="editLateTimeModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+
+				<h4 class="modal-title" id="myModalLabel">แก้ไขเวลาเข้าสาย</h4>
+			</div>
+
+			<div class="modal-body">
+				<form method="post" 
+				action="{{ url("/dashboard/course/{$course->url()}/edit#info") }}">
+					<div class="form-group">
+						<label for="room">เวลาเข้าสาย</label>
+						<input type="number" class="form-control" name="newLateTime" placeholder="เวลาเข้าสาย"
+						required value="{{$course->late_time}}">
+					</div>
+					{{csrf_field()}}
+					<button type="button" class="btn btn-default" data-dismiss="modal">
+						ยกเลิก
+					</button>
+					<button type="submit" class="btn btn-success">
+						<i class="fa fa-pencil"></i> แก้ไข
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

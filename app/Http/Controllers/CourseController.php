@@ -138,26 +138,19 @@ class CourseController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Course $course, Request $request)
     {
-        //
+        $course->late_time = $request->newLateTime;
+
+        $course->save();
+
+        return back()->with('status', 'แก้ไขข้อมูลสำเร็จ');
     }
 
     public function export(Course $course)
@@ -188,16 +181,5 @@ class CourseController extends Controller
         $users->each->enroll($course);
 
         return back()->with('status', 'เพิ่มข้อมูลสำเร็จ');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

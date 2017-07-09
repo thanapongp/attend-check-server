@@ -26,6 +26,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
 
     Route::get('/course/{course}/{schedule}', 'CourseController@showSchedule');
     Route::get('/course/{course}/student/{id}', 'CourseController@showStudentRaw');
+
+    Route::post('/course/{course}/edit', 'CourseController@update');
     
     Route::post('/manual-check', 'AttendanceController@attendClass');
     Route::post('/enable-firstcheck', 'ScheduleController@generateFirstCheckCode');
